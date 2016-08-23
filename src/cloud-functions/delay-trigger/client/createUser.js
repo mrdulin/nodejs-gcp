@@ -3,7 +3,7 @@ const faker = require('faker');
 const pubsub = require('./pubsub');
 
 async function main() {
-  const count = 3;
+  const count = 10;
   const CREATE_USER_TOPIC = 'create-user';
 
   for (let i = 0; i < count; i++) {

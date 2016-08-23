@@ -31,7 +31,10 @@ async function createServer() {
   });
 
   app.get('/users', (req, res) => {
-    res.json(memoryDB.users);
+    res.json({
+      users: memoryDB.users,
+      count: memoryDB.users.length
+    });
   });
 
   app.get('/clear-db', (req, res) => {
