@@ -104,4 +104,4 @@ function pull(subName, maxMessages) {
     .catch(console.error);
 }
 
-module.exports = { createTopic, createSubscription, pubsubClient, publish, pull };
+module.exports = { createTopic, createSubscription, pubsubClient, publish, pull, subscriberClient };

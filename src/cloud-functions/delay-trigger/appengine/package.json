@@ -1,6 +1,6 @@
 {
   "name": "appengine",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "",
   "main": "server.js",
   "scripts": {
@@ -14,7 +14,11 @@
   "license": "MIT",
   "dependencies": {
     "@google-cloud/pubsub": "^0.19.1",
+    "async": "^2.6.2",
     "express": "^4.16.4",
     "lodash": "^4.17.11"
+  },
+  "devDependencies": {
+    "@types/async": "^2.4.1"
   }
 }
