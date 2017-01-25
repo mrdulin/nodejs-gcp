@@ -1,5 +1,6 @@
 import express from 'express';
 import { DiscoveryService } from './DiscoveryService';
+import { PersonService } from './PersonService';
 
 async function createServer() {
   const app = express();
@@ -18,6 +19,12 @@ async function createServer() {
     } catch (err) {
       res.sendStatus(500);
     }
+  });
+
+  app.get('/person', async (req, res) => {
+    const personService = new PersonService();
+    await personService.getByType();
+    res.sendStatus(200);
   });
 
   return app.listen(PORT, () => {
