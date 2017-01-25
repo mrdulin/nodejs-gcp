@@ -1,5 +1,7 @@
-import { connect } from './db';
 import Knex, { TableBuilder } from 'knex';
+
+import { connect } from './db';
+import './env';
 
 function createTables(knex: Knex) {
   knex.schema

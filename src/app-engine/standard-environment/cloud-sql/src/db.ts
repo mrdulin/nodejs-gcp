@@ -1,14 +1,15 @@
 import Knex, { MySqlConnectionConfig } from 'knex';
 
 function connect(): Knex {
+  const { SQL_USER, SQL_PASSWORD, SQL_DATABASE, NODE_ENV, INSTANCE_CONNECTION_NAME } = process.env;
   const config: MySqlConnectionConfig = {
-    user: process.env.SQL_USER,
-    password: process.env.SQL_PASSWORD,
-    database: process.env.SQL_DATABASE,
+    user: SQL_USER,
+    password: SQL_PASSWORD,
+    database: SQL_DATABASE,
     socketPath: ''
   };
 
-  if (process.env.INSTANCE_CONNECTION_NAME && process.env.NODE_ENV === 'production') {
+  if (INSTANCE_CONNECTION_NAME && NODE_ENV === 'production') {
     config.socketPath = `/cloudsql/${process.env.INSTANCE_CONNECTION_NAME}`;
   }
 

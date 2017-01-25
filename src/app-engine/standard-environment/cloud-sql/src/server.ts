@@ -2,14 +2,20 @@ import express from 'express';
 import crypto from 'crypto';
 import http from 'http';
 
+import pkg from '../package.json';
 import { insertVisit, getVisits } from './db';
+import { printenv, listNpmPkgs } from './util';
 
 async function server(options): Promise<http.Server> {
   const app: express.Application = express();
   const { PORT, knex } = options;
   app.enable('trust proxy');
 
-  app.get('/', (req, res, next) => {
+  app.get('/', (req, res) => {
+    res.sendStatus(200);
+  });
+
+  app.get('/visits', (req, res, next) => {
     const visit = {
       timestamp: new Date(),
       userIp: crypto
@@ -29,6 +35,20 @@ async function server(options): Promise<http.Server> {
           .end();
       })
       .catch((err) => next(err));
+  });
+
+  app.get('/version', (req, res) => {
+    res.send(`version: ${pkg.version}`);
+  });
+
+  app.get('/env', (req, res) => {
+    const names: string[] = ['SQL_USER', 'SQL_DATABASE', 'INSTANCE_CONNECTION_NAME', 'NODE_ENV', 'PORT'];
+    const envs = printenv(names);
+    res.send(envs);
+  });
+
+  app.get('/npm-list', (req, res) => {
+    res.send(listNpmPkgs());
   });
 
   return app.listen(PORT, () => {

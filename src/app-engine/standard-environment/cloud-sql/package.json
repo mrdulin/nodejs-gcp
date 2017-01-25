@@ -1,13 +1,15 @@
 {
   "name": "cloud-sql",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "https://cloud.google.com/appengine/docs/standard/nodejs/using-cloud-sql",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "seed": "ts-node ./src/seed.ts",
     "build": "webpack",
+    "prestart": "npm run build",
     "start": "node ./dist/main.js",
+    "patch": "npm version patch",
     "predeploy": "npm run build && npm run patch",
     "deploy": "gcloud app deploy"
   },
@@ -29,6 +31,8 @@
     "webpack-node-externals": "^1.7.2"
   },
   "devDependencies": {
+    "@types/dotenv": "^4.0.3",
+    "dotenv": "^6.1.0",
     "ts-node": "^7.0.1"
   }
 }
