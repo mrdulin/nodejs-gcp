@@ -26,7 +26,7 @@ function traceStaticClassDecoratorFactory() {
         childSpan.addLabel('class', constructor.name);
         childSpan.addLabel('args', args);
         childSpan.addLabel('traceContext', childSpan.getTraceContext());
-        const rval = await originalStaticMethod.apply(null, args); // TODO: apply context
+        const rval = await originalStaticMethod.apply(constructor, args); // TODO: apply context
         childSpan.endSpan();
         return rval;
       };

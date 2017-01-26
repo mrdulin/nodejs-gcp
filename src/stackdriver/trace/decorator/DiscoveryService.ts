@@ -1,22 +1,13 @@
 import rp from 'request-promise';
 import { trace, traceStaticClassDecoratorFactory } from './trace';
 
-interface IDiscoveryServiceStatic {
-  readonly DISCOVERY_URL: string;
-  getDiscovery: () => Promise<string[]>;
-  operationA: () => Promise<unknown>;
-  operationB: () => Promise<unknown>;
-  operationC: (name: string, age: number, operationD: () => Promise<unknown>) => Promise<void>;
-  operationD: () => Promise<unknown>;
-  new (...args: any[]): DiscoveryService;
-}
-
-@traceStaticClassDecoratorFactory<IDiscoveryServiceStatic>()
+@traceStaticClassDecoratorFactory()
 class DiscoveryService {
   public static readonly DISCOVERY_URL: string = 'https://www.googleapis.com/discovery/v1/apis';
 
   // @trace({ name: 'getDiscovery' })
   public static async getDiscovery() {
+    console.log(this);
     await DiscoveryService.operationA();
     await DiscoveryService.operationB();
     await DiscoveryService.operationC('ez2on', 12, DiscoveryService.operationD);
