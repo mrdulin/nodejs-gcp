@@ -4,7 +4,7 @@ import http from 'http';
 
 import pkg from '../package.json';
 import { insertVisit, getVisits } from './db';
-import { printenv, listNpmPkgs } from './util';
+import { printenv } from './util';
 
 async function server(options): Promise<http.Server> {
   const app: express.Application = express();
@@ -45,10 +45,6 @@ async function server(options): Promise<http.Server> {
     const names: string[] = ['SQL_USER', 'SQL_DATABASE', 'INSTANCE_CONNECTION_NAME', 'NODE_ENV', 'PORT'];
     const envs = printenv(names);
     res.send(envs);
-  });
-
-  app.get('/npm-list', (req, res) => {
-    res.send(listNpmPkgs());
   });
 
   return app.listen(PORT, () => {

@@ -1,5 +1,6 @@
 service: gae-standard-cloud-sql
 runtime: nodejs8
+instance_class: F1
 env_variables:
   SQL_USER: dul
   SQL_PASSWORD: 365715693

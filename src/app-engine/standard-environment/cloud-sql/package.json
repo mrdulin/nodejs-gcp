@@ -1,6 +1,6 @@
 {
   "name": "cloud-sql",
-  "version": "1.0.3",
+  "version": "1.0.8",
   "description": "https://cloud.google.com/appengine/docs/standard/nodejs/using-cloud-sql",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "prestart": "npm run build",
     "start": "node ./dist/main.js",
     "patch": "npm version patch",
-    "predeploy": "npm run build && npm run patch",
+    "predeploy": "npm run patch && npm run build",
     "deploy": "gcloud app deploy"
   },
   "keywords": [],
