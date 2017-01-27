@@ -40,7 +40,8 @@ app.get('/env', (req, res) => {
 app.get('/npm-list', (req, res) => {
   const result = listNpmPkgs();
   console.log(result);
-  res.send(result);
+  const template = `<pre>${result}</pre>`;
+  res.send(template);
 });
 
 app.listen(PORT, () => {
