@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>push-to-gae-endpoint</title>
+</head>
+
+<body>
+  <ul>
+    <% for (var i = 0; i < messages.length; i ++) { %>
+    <li>
+      <%=JSON.stringify(messages[i])%>
+    </li>
+    <% } %>
+  </ul>
+
+  <div>
+    <form action="/" method="POST">
+      <div>
+        <input type="text" placeholder="username" name='username'>
+      </div>
+      <div>
+        <input type="email" placeholder="email" name="email">
+      </div>
+      <input type="submit">
+    </form>
+  </div>
+
+</body>
+
+</html>
