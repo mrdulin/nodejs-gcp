@@ -22,7 +22,7 @@ function createAppLogger(): Logger {
 const logger: Logger = createAppLogger();
 
 function sleep(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 function coin(): boolean {
@@ -43,11 +43,6 @@ function genBufferMessage(message: object | string): Buffer {
   return dataBuffer;
 }
 
-function serializePubsubEventData(message: any): string {
-  const dataBuffer = Buffer.from(JSON.stringify(message)).toString('base64');
-  return JSON.stringify({ data: dataBuffer });
-}
-
 function parsePubsubEventData(event) {
   const pubsubMessage = event.data;
   console.log('pubsubMessage: ', pubsubMessage);
@@ -56,4 +51,4 @@ function parsePubsubEventData(event) {
   return message;
 }
 
-export { logger, sleep, coin, genBufferMessage, serializePubsubEventData, parsePubsubEventData };
+export { logger, sleep, coin, genBufferMessage, parsePubsubEventData };

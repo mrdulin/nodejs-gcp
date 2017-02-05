@@ -1,13 +1,16 @@
 import faker from 'faker';
 
 import { logger } from '../../utils';
+import { topicName, init } from './init';
 import { pub } from '../../googlePubsub';
-import { init, topicName } from './init';
 
 async function main() {
   await init();
-  const message = { email: faker.internet.email() };
 
+  const message = {
+    name: faker.name.findName(),
+    email: faker.internet.email()
+  };
   try {
     await pub(topicName, message);
   } catch (error) {

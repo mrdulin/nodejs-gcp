@@ -1,4 +1,4 @@
-import * as PubSub from '@google-cloud/pubsub';
+import PubSub from '@google-cloud/pubsub';
 import { Subscription, Topic } from '@google-cloud/pubsub';
 
 import { logger } from '../../utils';
