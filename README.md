@@ -1,1 +1,5 @@
-# Node.js and GCP In Action - Node.js和GCP实战
+# Node.js and GCP In Action - Node.js 和 GCP 实战
+
+## 参考
+
+- https://github.com/GoogleCloudPlatform/nodejs-docs-samples

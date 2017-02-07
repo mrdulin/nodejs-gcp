@@ -1,10 +1,10 @@
 {
   "name": "static-files",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "server.js",
   "scripts": {
-    "deploy": "gcloud app deploy",
+    "deploy": "npm version patch && gcloud app deploy",
     "start": "node server.js"
   },
   "keywords": [],
