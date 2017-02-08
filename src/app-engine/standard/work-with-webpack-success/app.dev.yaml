@@ -2,9 +2,4 @@ runtime: nodejs8
 service: standard-env-work-with-webpack-success
 env_variables:
   NODE_ENV: development
-  PORT: 3000
-handlers:
-  - url: /
-    script: auto
-  - url: /version
-    script: auto
+  PORT: 8080
