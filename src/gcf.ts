@@ -54,11 +54,12 @@ class CloudFunctionService {
     return true;
   }
 
-  public invoke<Body>(message: IMessage<Body>): string | undefined {
+  public invoke<Body>(message: IMessage<Body>, base64: boolean = true): string {
     if (this.funcName) {
-      const jsonString = this.serializePubsubEventData(message);
+      const jsonString = base64 ? this.serializePubsubEventData(message) : JSON.stringify(message);
       return cp.execSync(`gcloud beta functions call ${this.funcName} --data '${jsonString}'`).toString();
     }
+    return '';
   }
 }
 
