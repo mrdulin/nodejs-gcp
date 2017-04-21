@@ -3,8 +3,6 @@ const { LoggingWinston } = require('@google-cloud/logging-winston');
 const { format } = require('winston');
 const pkg = require('./package.json');
 
-console.log('process.env.NODE_ENV: ', process.env.NODE_ENV);
-
 function jsonFormat(obj) {
   return JSON.stringify(obj, null, 2);
 }
@@ -46,5 +44,7 @@ const logger = winston.createLogger({
   defaultMeta: { service: pkg.name },
   transports
 });
+
+logger.debug(`process.env.NODE_ENV: ${process.env.NODE_ENV}`);
 
 module.exports = { logger };
