@@ -204,7 +204,7 @@ app.listen(PORT, () => {
 });
 ```
 
-`/tasks/create-user`就是每隔1分钟执行一次的定时任务触发的端点(`endpoint`)，换句话说，就是每1分钟调用一次`/tasks/create-user`，我们就可以在这里注册和实现我们的定时任务具体的功能逻辑了。关于这里为什么用`async.timesSeries`，简单说下，`app engine`在`cron.yaml`中定义的`cron job`, `schedule`最小是`every 1 mins`，要想实现精确到second的`schedule`，需要在代码中实现。使用`async.timesSeries`就可以实现`schedule`是`every 30 seconds`(`n = 2`)。
+`/tasks/create-user`就是每隔1分钟执行一次的定时任务触发的端点(`endpoint`)，换句话说，就是每1分钟调用一次`/tasks/create-user`，我们就可以在这里注册和实现我们的定时任务具体的功能逻辑了。关于这里为什么用`async.timesSeries`，简单说下，`app engine`在`cron.yaml`中定义的`cron job`, `schedule`最小是`every 1 mins`，要想实现精确到second的`schedule`，或者说，更细粒度的`schedule`，需要在代码中实现。使用`async.timesSeries`就可以实现`schedule`是`every 30 seconds`(`n = 2`)。
 
 下面来看最重要的部分`userService.js`:
 
