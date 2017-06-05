@@ -20,7 +20,6 @@ function request(url, text) {
 }
 
 async function operateVM(req, res) {
-  // console.log('req.body: ', JSON.stringify(req.body));
   const { command, text, response_url } = req.body;
   if (command !== '/vm') {
     await request(response_url, `unknown command: ${command}`);
