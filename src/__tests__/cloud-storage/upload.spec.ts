@@ -1,14 +1,31 @@
-import { UploadOptions } from '@google-cloud/storage';
+import { UploadOptions, Storage } from '@google-cloud/storage';
 import path from 'path';
 import { upload, storage } from '../../gcs';
 import { config } from './config';
 import { generateEncryptionKey, logger } from '../../utils';
+import faker from 'faker';
 
 describe('#upload', () => {
   const file = path.resolve(__dirname, '../../../tmp/mmczblsq.doc');
 
   it.skip('should upload file correctly', async () => {
     await upload(config.bucket, file, {
+      gzip: true,
+      metadata: {
+        cacheControl: 'public, max-age=31536000'
+      }
+    });
+  });
+
+  it('should upload file and create a folder correctly', async () => {
+    const myStorage = new Storage({ keyFilename: path.resolve(__dirname, '../../../.gcp/cloud-storage-admin.json') });
+    const bucket = myStorage.bucket('ez2on');
+    const fileName = 'mmczblsq.doc';
+    const filePath = path.resolve(__dirname, `../../../tmp/${fileName}`);
+    const uuid = faker.random.uuid();
+
+    await bucket.upload(filePath, {
+      destination: `${uuid}/${fileName}`,
       gzip: true,
       metadata: {
         cacheControl: 'public, max-age=31536000'
@@ -37,7 +54,7 @@ describe('#upload', () => {
     });
   });
 
-  it('should upload and encrypt secret json file with kms key correctly', async () => {
+  it.skip('should upload and encrypt secret json file with kms key correctly', async () => {
     const secretJSONFile = path.resolve(__dirname, '../../../tmp/secrets.json');
     await storage.bucket(config.bucket).upload(secretJSONFile, {
       kmsKeyName: `projects/${process.env.PROJECT_ID}/locations/global/keyRings/test/cryptoKeys/nodejs-gcp`,
