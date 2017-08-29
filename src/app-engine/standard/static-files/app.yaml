@@ -1,0 +1,2 @@
+service: static-files
+runtime: nodejs8
