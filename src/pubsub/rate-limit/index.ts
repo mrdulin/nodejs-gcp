@@ -53,8 +53,8 @@ function delayTestingV2() {
     const jsonString = Buffer.from(message.data, 'base64').toString();
     const user = JSON.parse(jsonString);
 
-    // ackIds.push(message.ackId);
-    // console.log('ackIds: ', ackIds);
+    ackIds.push(message.ackId);
+    console.log('ackIds: ', ackIds);
     // const request = {
     //   subscription: subscriberClient.subscriptionPath(process.env.PROJECT_ID, SUB),
     //   ackIds: [message.ackId],
