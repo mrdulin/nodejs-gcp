@@ -16,3 +16,5 @@
 - https://cloud.google.com/kubernetes-engine/docs/how-to/stateless-apps#update
 - https://cloud.google.com/kubernetes-engine/docs/concepts/deployment
 - https://cloud.google.com/kubernetes-engine/docs/concepts/secret
+- https://cloud.google.com/kubernetes-engine/docs/tutorials/hello-app#step_8_deploy_a_new_version_of_your_app
+- https://cloud.google.com/kubernetes-engine/docs/quickstart?hl=zh-cn

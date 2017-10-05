@@ -1,6 +1,6 @@
 {
   "name": "quick-start",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "description": "GKE nodejs quick start application",
   "main": "src/server.js",
   "scripts": {

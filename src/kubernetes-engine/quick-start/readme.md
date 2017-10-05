@@ -34,6 +34,9 @@ NAME                 TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)       
 nodejs-hello-world   LoadBalancer   10.11.253.240   <pending>     80:31697/TCP   38s
 ```
 
-## refs
+deploy a new version
 
-https://cloud.google.com/kubernetes-engine/docs/quickstart?hl=zh-cn
+```bash
+☁  quick-start [master] ⚡  kubectl set image deployment/nodejs-hello-world nodejs-hello-world=novaline/nodejs-hello-world:1.0.4
+deployment.apps "nodejs-hello-world" image updated
+```

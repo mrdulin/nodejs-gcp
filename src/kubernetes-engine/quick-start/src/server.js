@@ -1,15 +1,18 @@
 const express = require('express');
+
 const package = require('../package.json');
+const config = require('./config');
+const credentials = require('./credentials');
 
-console.log('process.env: ', process.env);
+console.log('config: ', config);
+console.log('credentials: ', credentials);
 
-const PORT = process.env.PORT || 8080;
 const app = express();
 
 app.get('/', (req, res) => {
   res.send(`version:${package.version}`);
 });
 
-app.listen(PORT, () => {
-  console.log(`Server listening on http://localhost:${PORT}`);
+app.listen(config.PORT, () => {
+  console.log(`Server listening on http://localhost:${config.PORT}`);
 });
