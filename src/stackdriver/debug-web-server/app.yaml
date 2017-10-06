@@ -1,0 +1,5 @@
+service: stackdriver-debug-web-server
+runtime: nodejs8
+env_variables:
+  NODE_ENV: production
+  PORT: 8080

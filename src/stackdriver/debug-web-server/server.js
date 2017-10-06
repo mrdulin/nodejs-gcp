@@ -1,4 +1,7 @@
-require('@google-cloud/debug-agent').start();
+require('@google-cloud/debug-agent').start({
+  allowExpressions: true,
+  capture: { maxFrames: 20, maxProperties: 100 }
+});
 
 const express = require('express');
 const path = require('path');
