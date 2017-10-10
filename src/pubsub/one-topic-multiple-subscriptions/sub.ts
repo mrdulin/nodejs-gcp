@@ -4,12 +4,12 @@ import { logger } from '../../utils';
 
 async function main() {
   await init();
-  pubsubClient.subscription(SUB_A).on('message', message => {
-    logger.info(`receieve message from sub:${SUB_A}. message: ${message}`);
+  pubsubClient.subscription(SUB_A).on('message', (message) => {
+    logger.info(`receieve message from sub:${SUB_A}. message: ${JSON.stringify(message)}`);
     message.ack();
   });
-  pubsubClient.subscription(SUB_B).on('message', message => {
-    logger.info(`receieve message from sub:${SUB_B}. message: ${message}`);
+  pubsubClient.subscription(SUB_B).on('message', (message) => {
+    logger.info(`receieve message from sub:${SUB_B}. message: ${JSON.stringify(message)}`);
     message.ack();
   });
 }

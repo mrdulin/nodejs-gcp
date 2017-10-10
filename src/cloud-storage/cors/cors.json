@@ -1,0 +1,26 @@
+[
+  {
+    "maxAgeSeconds": 3600,
+    "method": ["GET", "HEAD", "DELETE", "PUT", "POST"],
+    "origin": [
+      "https://pg-us-n-app-991483.appspot.com",
+      "https://staging.projectcedar.pwc.com",
+      "https://frontend-client-dot-pg-us-n-app-991483.appspot.com",
+      "https://client-api-dot-pg-us-n-app-991483.appspot.com",
+      "https://pg-gx-e-app-700458.appspot.com",
+      "https://development.projectcedar.pwc.com",
+      "https://projectcedar.pwc.com",
+      "https://frontend-client-dot-pg-us-p-app-695770.appspot.com",
+      "http://pg-us-n-app-991483.appspot.com",
+      "http://staging.projectcedar.pwc.com",
+      "http://frontend-client-dot-pg-us-n-app-991483.appspot.com",
+      "http://client-api-dot-pg-us-n-app-991483.appspot.com",
+      "http://pg-gx-e-app-700458.appspot.com",
+      "http://development.projectcedar.pwc.com",
+      "http://projectcedar.pwc.com",
+      "http://frontend-client-dot-pg-us-p-app-695770.appspot.com",
+      "http://localhost:4200"
+    ],
+    "responseHeader": ["Content-Type"]
+  }
+]
