@@ -1,4 +1,4 @@
-import Storage, { UploadOptions } from '@google-cloud/storage';
+import Storage, { UploadOptions, DownloadOptions } from '@google-cloud/storage';
 import path from 'path';
 
 import { logger } from './utils';
@@ -72,4 +72,33 @@ function upload(bucketName: string, filename: string, options?: UploadOptions) {
     });
 }
 
-export { getBuckets, createBucket, deleteBucket, upload };
+function listAllObjects(bucketName: string) {
+  return storage
+    .bucket(bucketName)
+    .getFiles()
+    .then((result) => {
+      const [files] = result;
+      return files;
+    })
+    .catch((err) => {
+      logger.info(`Get files from ${bucketName} failed. ${err}`);
+    });
+}
+
+function download(bucketName: string, srcFilename: string, options?: DownloadOptions) {
+  return storage
+    .bucket(bucketName)
+    .file(srcFilename)
+    .download(options)
+    .then(() => {
+      let destination = '';
+      let msg: string = `gs://${bucketName}/${srcFilename} downloaded`;
+      if (options && options.destination) {
+        destination = options.destination;
+        msg = `${msg} to ${destination}.`;
+      }
+      logger.info(msg);
+    });
+}
+
+export { getBuckets, createBucket, deleteBucket, upload, listAllObjects, download };

@@ -11,7 +11,11 @@ function createAppLogger(): Logger {
       printf(
         (info: any): string => {
           const label: string = info.label ? ' ' + info.label + ' ' : '';
-          return `${info.timestamp}${label}[${info.level}] : ${JSON.stringify(info.message)}`;
+          let message = info.message ? info.message : info;
+          if (typeof message === 'object') {
+            message = JSON.stringify(message);
+          }
+          return `${info.timestamp}${label}[${info.level}] : ${message}`;
         }
       )
     ),
