@@ -1,0 +1,28 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: cron-job-image-pull-policy-test
+spec:
+  schedule: '*/1 * * * *'
+  startingDeadlineSeconds: 10
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            run: nodejs-gcp
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: cron-job-image-pull-policy-test
+              image: asia.gcr.io/shadowsocks-218808/cron-job-image-pull-policy-test:latest
+              env:
+                - name: NODE_ENV
+                  value: 'production'
+                - name: K8S_POD_NAME
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.name

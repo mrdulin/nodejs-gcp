@@ -16,7 +16,7 @@ configmap "envs" created
 ☁  configmap [master] ⚡  kubectl get configmap envs -o yaml
 apiVersion: v1
 data:
-  PROJECT_ID: shadowsocks-218808
+  PROJECT_ID: <PROJECT_ID>
   REGION: us-central1
   SQL_DATABASE: postgres
   SQL_INSTANCE_CONNECTION_NAME: shadowsocks-218808:us-central1:nodejs-gcp-instance
