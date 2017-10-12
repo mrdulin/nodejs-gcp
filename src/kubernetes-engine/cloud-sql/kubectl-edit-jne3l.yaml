@@ -1,0 +1,105 @@
+# Please edit the object below. Lines beginning with a '#' will be ignored,
+# and an empty file will abort the edit. If an error occurs while saving this file will be
+# reopened with the relevant failures.
+#
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: '5'
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"extensions/v1beta1","kind":"Deployment","metadata":{"annotations":{"deployment.kubernetes.io/revision":"1"},"creationTimestamp":"2019-01-23T05:50:09Z","generation":1,"labels":{"run":"nodejs-hello-world"},"name":"nodejs-hello-world","namespace":"default","resourceVersion":"16975","selfLink":"/apis/extensions/v1beta1/namespaces/default/deployments/nodejs-hello-world","uid":"be0f60e8-1ed2-11e9-b7b1-42010a8a0128"},"spec":{"progressDeadlineSeconds":600,"replicas":1,"revisionHistoryLimit":10,"selector":{"matchLabels":{"run":"nodejs-hello-world"}},"strategy":{"rollingUpdate":{"maxSurge":1,"maxUnavailable":1},"type":"RollingUpdate"},"template":{"metadata":{"creationTimestamp":null,"labels":{"run":"nodejs-hello-world"}},"spec":{"containers":[{"env":[{"name":"SQL_INSTANCE_CONNECTION_NAME","valueFrom":{"secretKeyRef":{"key":"SQL_INSTANCE_CONNECTION_NAME","name":"credentials"}}},{"name":"SQL_USER","valueFrom":{"secretKeyRef":{"key":"SQL_USER","name":"credentials"}}},{"name":"SQL_PASSWORD","valueFrom":{"secretKeyRef":{"key":"SQL_PASSWORD","name":"credentials"}}}],"image":"docker.io/novaline/nodejs-hello-world:1.0","imagePullPolicy":"IfNotPresent","name":"nodejs-hello-world","ports":[{"containerPort":3200,"protocol":"TCP"}],"resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File"}],"dnsPolicy":"ClusterFirst","restartPolicy":"Always","schedulerName":"default-scheduler","securityContext":{},"terminationGracePeriodSeconds":30}}},"status":{"availableReplicas":1,"conditions":[{"lastTransitionTime":"2019-01-23T05:50:09Z","lastUpdateTime":"2019-01-23T05:50:09Z","message":"Deployment has minimum availability.","reason":"MinimumReplicasAvailable","status":"True","type":"Available"},{"lastTransitionTime":"2019-01-23T05:50:09Z","lastUpdateTime":"2019-01-23T05:50:11Z","message":"ReplicaSet \"nodejs-hello-world-56b6b97456\" has successfully progressed.","reason":"NewReplicaSetAvailable","status":"True","type":"Progressing"}],"observedGeneration":1,"readyReplicas":1,"replicas":1,"updatedReplicas":1}}
+  creationTimestamp: 2019-01-23T05:50:09Z
+  generation: 5
+  labels:
+    run: nodejs-hello-world
+  name: nodejs-hello-world
+  namespace: default
+  resourceVersion: '37846'
+  selfLink: /apis/extensions/v1beta1/namespaces/default/deployments/nodejs-hello-world
+  uid: be0f60e8-1ed2-11e9-b7b1-42010a8a0128
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      run: nodejs-hello-world
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: nodejs-hello-world
+
+    spec:
+      volumes:
+        - name: cloudsql-instance-credentials
+          secret:
+            secretName: cloudsql-instance-credentials
+      containers:
+        - name: nodejs-hello-world
+          image: novaline/nodejs-hello-world:2.0.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3200
+              protocol: TCP
+          env:
+            - name: SQL_DATABASE
+              value: 'avstar'
+            - name: SQL_USER
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: cloud-db-credentials
+            - name: SQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: cloud-db-credentials
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        - name: cloudsql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:1.11
+          command:
+            [
+              '/cloud_sql_proxy',
+              '-instances=shadowsocks-218808:us-central1:nodejs-gcp=tcp:5432',
+              '-credential_file=/secrets/cloudsql/credentials.json',
+            ]
+          securityContext:
+            runAsUser: 2 # non-root user
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: cloudsql-instance-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 1
+  conditions:
+    - lastTransitionTime: 2019-01-23T05:50:09Z
+      lastUpdateTime: 2019-01-23T05:50:09Z
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: 'True'
+      type: Available
+    - lastTransitionTime: 2019-01-23T05:50:09Z
+      lastUpdateTime: 2019-01-23T08:57:14Z
+      message: ReplicaSet "nodejs-hello-world-84fc7c596c" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: 'True'
+      type: Progressing
+  observedGeneration: 5
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1

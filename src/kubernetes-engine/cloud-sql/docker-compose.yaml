@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  pg:
+    image: postgres:9.6
+    environment:
+      POSTGRES_DB: ${SQL_DATABASE}
+      POSTGRES_USER: ${SQL_USER}
+      POSTGRES_PASSWORD: ${SQL_PASSWORD}
+    ports:
+      - 5555:5432
