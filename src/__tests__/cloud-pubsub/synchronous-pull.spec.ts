@@ -11,7 +11,7 @@ beforeAll(async () => {
   await createSubscription(topicName, subName);
 });
 
-describe('#pull', () => {
+describe('pull#synchronous_pull', () => {
   let ackIds: string[] = [];
   // beforeEach(async () => {});
   afterEach(() => {

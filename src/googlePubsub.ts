@@ -2,6 +2,19 @@ import Pubsub, { Publisher, GCloudConfiguration } from '@google-cloud/pubsub';
 import { logger, genBufferMessage } from './utils';
 import './envVars';
 
+interface IMessage<Attributes extends object = {}> {
+  connectionId: string;
+  ackId: string;
+  id: string;
+  attributes: Attributes;
+  publishTime: string;
+  received: number;
+  data: Buffer;
+  timestamp: string;
+  ack(): void;
+  nack(): void;
+}
+
 const options: GCloudConfiguration = {} || {
   projectId: process.env.PROJECT_ID,
   keyFilename: process.env.PUBSUB_ADMIN_CREDENTIAL
@@ -129,6 +142,11 @@ async function pullMessages(subName: string, maxMessages: number) {
     });
 }
 
+function parseMessageData(data: Buffer) {
+  const jsonString = Buffer.from(data).toString();
+  return JSON.parse(jsonString);
+}
+
 export {
   createTopic,
   createSubscription,
@@ -138,5 +156,7 @@ export {
   pub,
   sub,
   subscriberClient,
-  pullMessages
+  pullMessages,
+  IMessage,
+  parseMessageData
 };
