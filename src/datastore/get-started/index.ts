@@ -3,7 +3,7 @@ import Datastore from '@google-cloud/datastore';
 import { logger } from '../../utils';
 
 const datastore = new Datastore({
-  projectId: 'pg-gx-e-app-700458'
+  projectId: process.env.PROJECT_ID
 });
 
 function addTask(description: string) {
@@ -32,7 +32,7 @@ function addTask(description: string) {
     .then(() => {
       logger.info(`Task ${taskKey.id} created successfully.`);
     })
-    .catch(err => {
+    .catch((err) => {
       logger.error(err);
     });
 }
@@ -41,17 +41,12 @@ interface IEnvVars {
   [key: string]: string;
 }
 
-function getEnvVars(): Promise<IEnvVars> {
+async function getEnvVars(): Promise<IEnvVars> {
   const query = datastore.createQuery('envVars');
-  return datastore
-    .runQuery(query)
-    .then((results: any[]) => {
-      const envVars = results[0];
-      return envVars[0];
-    })
-    .catch(err => {
-      logger.error(err);
-    });
+  return datastore.runQuery(query).then((results: any[]) => {
+    const envVars = results[0];
+    return envVars[0];
+  });
 }
 
 async function main() {
