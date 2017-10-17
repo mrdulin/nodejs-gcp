@@ -1,0 +1,5 @@
+service: webpack-compile-after-deploy
+runtime: nodejs8
+env_variables:
+  NODE_ENV: production
+  PORT: 3000

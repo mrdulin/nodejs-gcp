@@ -2,8 +2,11 @@ const nodeExternals = require('webpack-node-externals');
 const webpack = require('webpack');
 const path = require('path');
 
+console.log('=== Webpack build environment ===');
+console.log(`process.env.NODE_ENV: ${process.env.NODE_ENV}`);
+
 const webpack_opts = {
-  mode: 'none',
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: './src/main.ts',
   target: 'node',
   output: {
@@ -14,9 +17,6 @@ const webpack_opts = {
   resolve: {
     extensions: ['.ts', '.js'],
     modules: ['node_modules', 'src']
-  },
-  optimization: {
-    nodeEnv: false
   },
   plugins: [
     new webpack.LoaderOptionsPlugin({
