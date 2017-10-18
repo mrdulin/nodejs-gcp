@@ -15,3 +15,7 @@
 
 # Node.js dependencies:
 node_modules/
+webpack.config.js
+src/
+tsconfig.json
+readme.md

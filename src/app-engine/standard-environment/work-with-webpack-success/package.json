@@ -1,14 +1,13 @@
 {
   "name": "standard-environment-work-with-webpack-success",
-  "version": "1.0.17",
+  "version": "1.0.20",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node ./dist/main.js",
     "build": "webpack",
-    "predeploy": "npm version patch && npm run build",
-    "deploy:dev": "gcloud app deploy ./app.dev.yaml",
-    "deploy:prod": "gcloud app deploy ./app.prod.yaml"
+    "deploy:dev": "npm version patch && npm run build && gcloud app deploy ./app.dev.yaml",
+    "deploy:prod": "npm version patch && npm run build && gcloud app deploy ./app.prod.yaml"
   },
   "keywords": [],
   "author": "",
