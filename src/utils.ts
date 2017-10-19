@@ -25,7 +25,20 @@ function createAppLogger(): Logger {
 
 const logger: Logger = createAppLogger();
 
-function sleep(ms: number): Promise<void> {
+function sleep(ms: number, verbose?: boolean): Promise<void> {
+  if (verbose) {
+    const unit = 1000;
+    logger.info(`start the timer...${ms / unit}s`);
+    const intervalId = setInterval(() => {
+      ms -= unit;
+      if (ms > 0) {
+        logger.info(`${ms / unit}s`);
+      } else {
+        logger.info('timer end');
+        clearInterval(intervalId);
+      }
+    }, unit);
+  }
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
@@ -47,11 +60,15 @@ function genBufferMessage(message: object | string): Buffer {
   return dataBuffer;
 }
 
-function parsePubsubEventData(event) {
+function parsePubsubEventData(event, verbose: boolean = true) {
   const pubsubMessage = event.data;
-  console.log('pubsubMessage: ', pubsubMessage);
+  if (verbose) {
+    console.log('pubsubMessage: ', pubsubMessage);
+  }
   const message = JSON.parse(Buffer.from(pubsubMessage.data, 'base64').toString());
-  console.log('message:', message);
+  if (verbose) {
+    console.log('message:', message);
+  }
   return message;
 }
 
