@@ -5,10 +5,8 @@ import faker from 'faker';
 async function main() {
   await init();
 
-  setInterval(() => {
-    const message = { data: faker.lorem.word() };
-    pub(TOPIC, message);
-  }, 5000);
+  const message = { data: faker.lorem.word() };
+  pub(TOPIC, message);
 }
 
 main();
