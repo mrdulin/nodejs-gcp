@@ -4,13 +4,11 @@ import { topicName, subName } from './constants';
 
 async function main() {
   await createSubscription(topicName, subName);
-  const subscription = pubsubClient.subscription(subName);
-  subscription.on('message', msg => {
-    const data = msg.data.toString();
-    logger.info(`msg.id: ${msg.id}`);
-    logger.info(`msg.publishTime: ${msg.publishTime}`);
-    logger.info(`msg.data: ${data}`);
-    msg.ack();
+  pubsubClient.subscription(subName).on('message', (message) => {
+    const { id, attributes } = message;
+    const jsonData = JSON.parse(message.data.toString());
+    logger.debug('message', { arguments: { message: { id, attributes, data: jsonData } } });
+    message.ack();
   });
 }
 

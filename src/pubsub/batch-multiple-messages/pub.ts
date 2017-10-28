@@ -10,7 +10,7 @@ function publishMessageHandler(p: Promise<any>) {
     .then((msgId: string) => {
       logger.info(`Message ${msgId} published.`);
     })
-    .catch(err => logger.error(err));
+    .catch((err) => logger.error(err));
 }
 
 function genRandomDataBuffer() {
@@ -31,14 +31,13 @@ async function main(options: any) {
     }
   });
 
-  logger.info('Start publish messages');
+  const tasks: any[] = [];
   for (let i = 0; i < options.repeat; i++) {
     const dataBuffer: Buffer = genRandomDataBuffer();
-    publishMessageHandler(publisher.publish(dataBuffer));
-    logger.info(`Wait ${options.wait} millisecond`);
+    tasks.push(publishMessageHandler(publisher.publish(dataBuffer)));
     await sleep(options.wait);
   }
-  logger.info('Publish messages is finished');
+  await Promise.all(tasks);
 }
 
-main({ topic: topicName, maxMessages: 10, maxWaitTime: 10000, repeat: 3, wait: 2000 });
+main({ topic: topicName, maxMessages: 10, maxWaitTime: 10 * 1000, repeat: 3, wait: 1000 });

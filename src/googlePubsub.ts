@@ -1,11 +1,10 @@
 import Pubsub, { Publisher, GCloudConfiguration } from '@google-cloud/pubsub';
-import path from 'path';
-
 import { logger, genBufferMessage } from './utils';
+import './envVars';
 
 const options: GCloudConfiguration = {} || {
-  projectId: 'shadowsocks-218808',
-  keyFilename: path.resolve(__dirname, '../.gcp/shadowsocks-218808-7f8e109f4089.json')
+  projectId: process.env.PROJECT_ID,
+  keyFilename: process.env.PUBSUB_ADMIN_CREDENTIAL
 };
 const pubsubClient: Pubsub.PubSub = Pubsub(options);
 const subscriberClient = new (Pubsub.v1 as any).SubscriberClient(options);
