@@ -65,7 +65,7 @@ describe('#download', () => {
     logger.debug('contents', { extra: contents.toString() });
   });
 
-  it('should download and decrypt kms encrypted secret json file into memory correctly', async () => {
+  it.skip('should download and decrypt kms encrypted secret json file into memory correctly', async () => {
     const srcFilename = 'secret.json.encrypted';
     const response: DownloadResponse = await storage
       .bucket(config.bucket)
@@ -74,5 +74,17 @@ describe('#download', () => {
     const contents = response[0];
     const secrets = JSON.parse(contents.toString());
     logger.debug('contents', { extra: { secrets } });
+  });
+
+  it('will throw error when download kms encrypted file with no permission service account', async () => {
+    const srcFilename = 'secret.json.encrypted';
+    const options: DownloadOptions = { destination: getDestination('secret-with-no-permission-service-account.json') };
+    const newStorage = new Storage({ keyFilename: path.resolve(__dirname, '../../../.gcp/pubsub-admin.json') });
+    await expect(
+      newStorage
+        .bucket(config.bucket)
+        .file(srcFilename)
+        .download(options)
+    ).rejects.toThrow(/iam.gserviceaccount.com does not have storage.objects.get access/);
   });
 });
