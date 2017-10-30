@@ -22,4 +22,6 @@ NAME                                                                            
 projects/shadowsocks-218808/locations/global/keyRings/test/cryptoKeys/quickstart/cryptoKeyVersions/1  DESTROY_SCHEDULED
 ```
 
-https://cloud.google.com/kms/docs/quickstart
+### references
+
+- https://cloud.google.com/kms/docs/quickstart

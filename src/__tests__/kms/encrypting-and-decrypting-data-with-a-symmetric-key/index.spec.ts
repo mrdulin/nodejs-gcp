@@ -1,6 +1,5 @@
-const path = require('path');
-
-const { encrypt, decrypt } = require('./');
+import path from 'path';
+import { decrypt, encrypt } from '../../../kms';
 
 describe('encrypt data test suites', () => {
   it.skip('#encrypt', async () => {

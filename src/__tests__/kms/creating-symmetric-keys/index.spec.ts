@@ -1,4 +1,4 @@
-const { createKeyRing, createCryptoKey, listKeyRings } = require('./');
+import { createKeyRing, createCryptoKey, listKeyRings } from '../../../kms';
 
 describe('creating-symmetric-keys test suites', () => {
   const keyRingId = 'test-2';
