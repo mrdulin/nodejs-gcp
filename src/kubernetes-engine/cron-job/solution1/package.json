@@ -1,0 +1,20 @@
+{
+  "name": "gke-cron-job-solution1",
+  "version": "1.0.0",
+  "description": "GKE cron job solution 1 - cloud scheduler + cloud pub/sub",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./src/index.js"
+  },
+  "keywords": [],
+  "author": "mrdulin <novaline.dulin@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@google-cloud/pubsub": "^0.23.0",
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "dotenv": "^6.2.0"
+  }
+}
