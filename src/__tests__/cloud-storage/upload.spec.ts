@@ -17,6 +17,7 @@ describe('#upload', () => {
 
   it('should upload file with encryption key correctly', async () => {
     const encryptionKey = generateEncryptionKey();
+    logger.debug(`encryptionKey: ${encryptionKey}`);
     const options: UploadOptions = {
       destination: 'mmczblsq.encrypted.doc',
       encryptionKey: Buffer.from(encryptionKey, 'base64')

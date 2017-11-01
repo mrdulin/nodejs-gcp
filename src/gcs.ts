@@ -5,7 +5,8 @@ import {
   UploadResponse,
   GetBucketsResponse,
   Bucket,
-  File
+  File,
+  DownloadResponse
 } from '@google-cloud/storage';
 import path from 'path';
 import { logger } from './utils';
@@ -84,22 +85,15 @@ async function listAllObjects(bucketName: string) {
 
 async function download(bucketName: string, filename: string, options?: DownloadOptions) {
   try {
-    await storage
+    const response: DownloadResponse = await storage
       .bucket(bucketName)
       .file(filename)
       .download(options);
+    const [buffer]: [Buffer] = response;
+    return buffer;
   } catch (error) {
-    logger.error(error);
-    throw new Error('download error');
+    throw error;
   }
-
-  let destination = '';
-  let msg: string = `gs://${bucketName}/${filename} downloaded`;
-  if (options && options.destination) {
-    destination = options.destination;
-    msg = `${msg} to ${destination}.`;
-  }
-  logger.info(msg);
 }
 
-export { getBuckets, createBucket, deleteBucket, upload, listAllObjects, download };
+export { getBuckets, createBucket, deleteBucket, upload, listAllObjects, download, storage };
