@@ -33,3 +33,4 @@
 ## 参考
 
 - https://cloud.google.com/docs/authentication/getting-started
+- https://cloud.google.com/storage/docs/configuring-cors

@@ -1,4 +1,12 @@
-import { Storage, UploadOptions, DownloadOptions } from '@google-cloud/storage';
+import {
+  Storage,
+  UploadOptions,
+  DownloadOptions,
+  UploadResponse,
+  GetBucketsResponse,
+  Bucket,
+  File
+} from '@google-cloud/storage';
 import path from 'path';
 import { logger } from './utils';
 
@@ -7,35 +15,26 @@ const storage: Storage = new Storage({
   keyFilename: path.resolve(__dirname, '../.gcp/cloud-storage-admin.json')
 });
 
-function getBuckets() {
-  return storage
-    .getBuckets()
-    .then((response) => {
-      logger.info(`response: ${JSON.stringify(response)}`);
-      const buckets = response[0];
-      const bucketNames: string[] = [];
-      buckets.forEach((bucket) => {
-        bucketNames.push(bucket.name);
-      });
-      logger.info(`bucketNames: ${JSON.stringify(bucketNames)}`);
-      return buckets;
-    })
-    .catch((err) => {
-      logger.error(err);
-      return Promise.reject(new Error('get buckets error'));
-    });
+async function getBuckets(): Promise<Bucket[]> {
+  try {
+    const response: GetBucketsResponse = await storage.getBuckets();
+    const buckets: Bucket[] = response[0];
+    return buckets;
+  } catch (err) {
+    logger.error(err);
+    throw new Error('get buckets error');
+  }
 }
 
 async function exists(bucketName: string) {
-  let result: boolean = false;
   try {
-    const bucket = storage.bucket(bucketName);
-    const data = await bucket.exists();
-    result = data[0];
+    const bucket: Bucket = storage.bucket(bucketName);
+    const [rval] = await bucket.exists();
+    return rval;
   } catch (error) {
-    logger.error(`Check bucket ${bucketName} exists failed. ${error}`);
+    logger.error(error);
+    throw new Error(`check budget exists error`);
   }
-  return result;
 }
 
 async function createBucket(bucketName: string, config) {
@@ -61,46 +60,46 @@ async function deleteBucket(bucketName: string) {
   }
 }
 
-function upload(bucketName: string, filename: string, options?: UploadOptions) {
-  return storage
-    .bucket(bucketName)
-    .upload(filename, options)
-    .then(() => {
-      logger.info(`${filename} uploaded to ${bucketName}.`);
-    })
-    .catch((err) => {
-      logger.info(`${filename} uploaded to ${bucketName} failed. ${err}`);
-    });
+async function upload(bucketName: string, file: string, options?: UploadOptions): Promise<File> {
+  try {
+    const response: UploadResponse = await storage.bucket(bucketName).upload(file, options);
+    const [uploadedFile] = response;
+    return uploadedFile;
+  } catch (err) {
+    logger.error(err);
+    throw new Error(`${file} uploaded to ${bucketName} error`);
+  }
 }
 
-function listAllObjects(bucketName: string) {
-  return storage
-    .bucket(bucketName)
-    .getFiles()
-    .then((result) => {
-      const [files] = result;
-      return files;
-    })
-    .catch((err) => {
-      logger.error(err);
-      return Promise.reject(new Error('list all objects error'));
-    });
+async function listAllObjects(bucketName: string) {
+  try {
+    const response = await storage.bucket(bucketName).getFiles();
+    const [files] = response;
+    return files;
+  } catch (err) {
+    logger.error(err);
+    throw new Error('list all objects error');
+  }
 }
 
-function download(bucketName: string, srcFilename: string, options?: DownloadOptions) {
-  return storage
-    .bucket(bucketName)
-    .file(srcFilename)
-    .download(options)
-    .then(() => {
-      let destination = '';
-      let msg: string = `gs://${bucketName}/${srcFilename} downloaded`;
-      if (options && options.destination) {
-        destination = options.destination;
-        msg = `${msg} to ${destination}.`;
-      }
-      logger.info(msg);
-    });
+async function download(bucketName: string, filename: string, options?: DownloadOptions) {
+  try {
+    await storage
+      .bucket(bucketName)
+      .file(filename)
+      .download(options);
+  } catch (error) {
+    logger.error(error);
+    throw new Error('download error');
+  }
+
+  let destination = '';
+  let msg: string = `gs://${bucketName}/${filename} downloaded`;
+  if (options && options.destination) {
+    destination = options.destination;
+    msg = `${msg} to ${destination}.`;
+  }
+  logger.info(msg);
 }
 
 export { getBuckets, createBucket, deleteBucket, upload, listAllObjects, download };

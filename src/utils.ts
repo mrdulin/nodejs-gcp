@@ -1,29 +1,8 @@
-import { createLogger, transports, format, Logger } from 'winston';
+import { createLogger } from 'dl-toolkits';
+import crypto from 'crypto';
 import _ from 'lodash';
 
-function createAppLogger(): Logger {
-  const { combine, timestamp, printf, colorize } = format;
-
-  return createLogger({
-    format: combine(
-      colorize(),
-      timestamp(),
-      printf(
-        (info: any): string => {
-          const label: string = info.label ? ' ' + info.label + ' ' : '';
-          let message = info.message ? info.message : info;
-          if (typeof message === 'object') {
-            message = JSON.stringify(message);
-          }
-          return `${info.timestamp}${label}[${info.level}] : ${message}`;
-        }
-      )
-    ),
-    transports: [new transports.Console()]
-  });
-}
-
-const logger: Logger = createAppLogger();
+const logger = createLogger({ serviceName: 'nodejs-gcp' });
 
 function sleep(ms: number, verbose?: boolean): Promise<void> {
   if (verbose) {
@@ -72,4 +51,9 @@ function parsePubsubEventData(event, verbose: boolean = true) {
   return message;
 }
 
-export { logger, sleep, coin, genBufferMessage, parsePubsubEventData };
+function generateEncryptionKey() {
+  const buffer = crypto.randomBytes(32);
+  return buffer.toString('base64');
+}
+
+export { logger, sleep, coin, genBufferMessage, parsePubsubEventData, generateEncryptionKey };
