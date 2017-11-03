@@ -1,0 +1,5 @@
+cron:
+# - description: 'sync job'
+#   url: /tasks/sync
+#   schedule: every 1 minutes
+#   target: cron-service
