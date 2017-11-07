@@ -1,0 +1,20 @@
+{
+  "name": "better-logging",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "call": "gcloud functions call",
+    "deploy:consoleLogging": "gcloud beta functions deploy consoleLogging --trigger-http --runtime=nodejs8 --memory=128 --timeout=10",
+    "deploy:winstonLogging": "gcloud beta functions deploy winstonLogging --trigger-http --runtime=nodejs8 --memory=128 --timeout=10"
+  },
+  "keywords": [],
+  "author": "mrdulin <novaline.dulin@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@google-cloud/logging-winston": "^0.11.1",
+    "faker": "^4.1.0",
+    "winston": "^3.2.1"
+  }
+}
