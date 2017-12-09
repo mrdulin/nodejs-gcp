@@ -4,9 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "../../../node_modules/.bin/tsc ./index.ts",
-    "predeploy": "npm run build",
-    "deploy": "gcloud beta functions deploy afterTimeout --trigger-http --timeout=5s"
+    "deploy": "gcloud functions deploy dontUseSetTimeout --trigger-http --timeout=10 --runtime=nodejs8 --memory=128"
   },
   "keywords": [],
   "author": "",

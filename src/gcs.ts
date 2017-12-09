@@ -1,18 +1,18 @@
-import Storage, { UploadOptions, DownloadOptions } from '@google-cloud/storage';
+import { Storage, UploadOptions, DownloadOptions } from '@google-cloud/storage';
 import path from 'path';
-
 import { logger } from './utils';
 
 const storage: Storage = new Storage({
-  keyFilename: path.resolve(__dirname, '../.gcp/nodejs-starter-6e41cd4497ca.json')
+  projectId: process.env.PROJECT_ID,
+  keyFilename: path.resolve(__dirname, '../.gcp/cloud-storage-admin.json')
 });
 
 function getBuckets() {
   return storage
     .getBuckets()
-    .then((results) => {
-      logger.info('Get buckets success.');
-      const buckets = results[0];
+    .then((response) => {
+      logger.info(`response: ${JSON.stringify(response)}`);
+      const buckets = response[0];
       const bucketNames: string[] = [];
       buckets.forEach((bucket) => {
         bucketNames.push(bucket.name);
@@ -22,6 +22,7 @@ function getBuckets() {
     })
     .catch((err) => {
       logger.error(err);
+      return Promise.reject(new Error('get buckets error'));
     });
 }
 
@@ -37,7 +38,7 @@ async function exists(bucketName: string) {
   return result;
 }
 
-async function createBucket(bucketName: string, config: Storage.BucketConfig) {
+async function createBucket(bucketName: string, config) {
   if (await exists(bucketName)) {
     return;
   }
@@ -81,7 +82,8 @@ function listAllObjects(bucketName: string) {
       return files;
     })
     .catch((err) => {
-      logger.info(`Get files from ${bucketName} failed. ${err}`);
+      logger.error(err);
+      return Promise.reject(new Error('list all objects error'));
     });
 }
 
