@@ -266,9 +266,15 @@ gcloud functions deploy operateVM --trigger-http --memory=128 --runtime=nodejs8
 
 Cloud Function发送"VM is terminated"消息回来，表示GCE instance停止运行。
 
-至此，大致介绍完了整个流程。实现了GCE instance的随时启用，随时停止，至少能节省3USD，将每个月作为魔法上网使用的GCE instance成本压缩到2USD以内。
+至此，大致介绍完了整个流程。实现了GCE instance的随时启用，随时停止，至少能节省3USD，将每个月作为魔法上网使用的GCE instance成本压缩到2USD以内。对于不同的云平台，实现方式大同小异，重要的是要先确定合适自己的解决方案和架构设计，就可以为自己量身定做一些小工具。
 
+后来还想过再把ios的快捷指令(英文是workflow)，或者IFFF集成进来，做成一个按钮，将代理连接软件的启停也做成自动化的。
 
+还想过使用dialogflow，做成语音聊天机器人的形式，最终效果是，语音输入"我要魔法上网"，"我要看油管"，dialogflow的会话机器人根据通过自然语言分析和处理，解析出我的语意，上下文，询问我"是否开启代理服务器"，我说"是"，然后执行一系列程序，自动化流程，最终打开油管页面或者app。自然语言不仅仅只有文字形式，人类说话的语音也是一种自然语言。这套流程，我觉得可以作为一个有追求的大学的课后作业了。
+
+### 源码地址
+
+https://github.com/mrdulin/nodejs-gcp/tree/master/src/cloud-functions/slack-command
 
 ### 参考
 
