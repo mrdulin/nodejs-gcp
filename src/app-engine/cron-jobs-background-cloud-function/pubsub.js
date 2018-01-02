@@ -13,13 +13,22 @@ const options = PROD
 const pubsubClient = new Pubsub(options);
 const subscribeClient = new Pubsub.v1.SubscriberClient(options);
 
-const createEmailRetryTopicName = 'createEmail-retry';
-const createEmailRetrySubName = 'createEmail-retry-sub';
+const pubsubs = [
+  { topic: 'createEmail', sub: 'createEmail-sub' },
+  { topic: 'createEmailRetry', sub: 'createEmailRetry-sub' },
+  { topic: 'createUser', sub: 'createUser-sub' },
+  { topic: 'createUserRetry', sub: 'createUserRetry-sub' }
+];
 
-const createEmailTopicName = 'createEmail';
-const createEmailSubName = 'createEmail-sub';
+function findSubNameByTopicName(name) {
+  const item = pubsubs.find(el => el.topic === name);
+  return item.sub || '';
+}
 
-const deadletterTopicName = 'deadletter';
+function findPubsubByTopic(topicName, attr) {
+  const item = pubsubs.find(el => el.topic === topicName);
+  return item[attr];
+}
 
 async function createSubscription(topicName, subName) {
   const subscription = pubsubClient.topic(topicName).subscription(subName);
@@ -65,11 +74,23 @@ async function pub(topicName, message) {
   }
 }
 
+async function bulkCreatePubsub(pubsubArray) {
+  const { topicNames, subNames } = pubsubArray.reduce(
+    (pre, cur) => {
+      const { topic, sub } = cur;
+      pre.topicNames.push(topic);
+      pre.subNames.push(sub);
+      return pre;
+    },
+    { topicNames: [], subNames: [] }
+  );
+
+  await Promise.all(topicNames.map(topicName => createTopic(topicName)));
+  await Promise.all(subNames.map((subName, idx) => createSubscription(topicNames[idx], subName)));
+}
+
 async function init() {
-  await createTopic(createEmailRetryTopicName);
-  await createSubscription(createEmailRetryTopicName, createEmailRetrySubName);
-  await createTopic(createEmailTopicName);
-  await createSubscription(createEmailTopicName, createEmailSubName);
+  await bulkCreatePubsub(pubsubs);
 }
 
 init();
@@ -77,10 +98,8 @@ init();
 module.exports = {
   subscribeClient,
   pubsubClient,
-  createEmailRetryTopicName,
-  createEmailRetrySubName,
-  createEmailTopicName,
-  createEmailSubName,
-  deadletterTopicName,
+  pubsubs,
+  findSubNameByTopicName,
+  findPubsubByTopic,
   pub
 };

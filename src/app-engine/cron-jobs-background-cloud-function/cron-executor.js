@@ -1,10 +1,11 @@
-const { subscribeClient, createEmailRetrySubName, createEmailTopicName, pub } = require('./pubsub');
+const { subscribeClient, pub, findSubNameByTopicName } = require('./pubsub');
 const { getEnvVars } = require('./metadata');
 
-async function getMessages() {
+async function getMessages(topicName) {
   const projectId = await getEnvVars('project-id', 'projectId');
   console.log('projectId: ', projectId);
-  const formattedSubscription = subscribeClient.subscriptionPath(projectId, createEmailRetrySubName);
+  const retrySubName = findSubNameByTopicName(topicName);
+  const formattedSubscription = subscribeClient.subscriptionPath(projectId, retrySubName);
   const maxMessages = 1;
   const request = {
     subscription: formattedSubscription,
@@ -27,7 +28,7 @@ async function getMessages() {
   }
 }
 
-async function processMessages(msgs) {
+async function processMessages(msgs, topicName, retryTopicName) {
   const projectId = await getEnvVars('project-id', 'projectId');
   console.log('msgs: ', msgs);
   for (receivedMessage of msgs) {
@@ -38,10 +39,11 @@ async function processMessages(msgs) {
     if (pubsubMessage) {
       const ackIds = [];
       const msg = updateRetryTimes(pubsubMessage);
-      runTask(msg);
+      runTask(topicName, msg);
       ackIds.push(receivedMessage.ackId);
+      const retrySubName = findSubNameByTopicName(retryTopicName);
       const request = {
-        subscription: `projects/${projectId}/subscriptions/${createEmailRetrySubName}`,
+        subscription: `projects/${projectId}/subscriptions/${retrySubName}`,
         ackIds
       };
 
@@ -89,8 +91,8 @@ function updateRetryTimes(msg) {
   }
 }
 
-async function runTask(msg) {
-  await pub(createEmailTopicName, msg);
+async function runTask(topicName, msg) {
+  await pub(topicName, msg);
 }
 
 module.exports = {

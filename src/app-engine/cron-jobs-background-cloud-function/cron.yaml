@@ -1,5 +1,9 @@
 cron:
-  - description: 'cron-jobs-background-cloud-function'
-    url: /cron/events/createEmailRetry
+  - description: 'cron trigger create email'
+    url: /cron/events/createEmail/createEmailRetry
+    schedule: every 1 hours
+    target: cron-jobs-background-cloud-function
+  - description: 'cron trigger create user'
+    url: /cron/events/createUser/createUserRetry
     schedule: every 1 hours
     target: cron-jobs-background-cloud-function

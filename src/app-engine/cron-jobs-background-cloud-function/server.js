@@ -1,24 +1,26 @@
 const express = require('express');
 
 const { getMessages, processMessages } = require('./cron-executor');
-
 const app = express();
 
 app.get('/', (req, res) => {
   res.sendStatus(200);
 });
 
-app.get('/cron/events/createEmailRetry', async (req, res) => {
+app.get('/cron/events/:topicName/:retryTopicName', async (req, res) => {
   if (process.env.NODE_ENV === 'production') {
     if (req.get('X-Appengine-Cron') !== 'true') {
       return res.sendStatus(403);
     }
   }
 
+  console.log('req.params: ', req.params);
+  const { topicName, retryTopicName } = req.params;
+
   try {
-    const msgs = await getMessages();
+    const msgs = await getMessages(retryTopicName);
     if (msgs.length) {
-      await processMessages(msgs);
+      await processMessages(msgs, topicName, retryTopicName);
     }
   } catch (error) {
     console.log('error happened', error);

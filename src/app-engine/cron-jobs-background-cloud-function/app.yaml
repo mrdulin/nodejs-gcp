@@ -2,3 +2,6 @@ runtime: nodejs8
 service: cron-jobs-background-cloud-function
 env_variables:
   NODE_ENV: production
+handlers:
+  - url: /cron/events/(.*)/(.*)
+    script: ./server.js
