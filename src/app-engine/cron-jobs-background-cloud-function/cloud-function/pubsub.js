@@ -2,7 +2,7 @@ const Pubsub = require('@google-cloud/pubsub');
 
 const pubsubClient = new Pubsub();
 
-const createEmailRetryTopicName = 'createEmail-retry';
+const createEmailRetryTopicName = 'createEmailRetry';
 const deadletterTopicName = 'deadletter';
 
 function pub(topicName, message, callback) {
