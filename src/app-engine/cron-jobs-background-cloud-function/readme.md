@@ -1,3 +1,17 @@
+## deploy
+
+Deploy `GAE` service
+
+```bash
+gcloud app deploy
+```
+
+Deploy `Cron Service`
+
+```bash
+gcloud app deploy cron.yaml
+```
+
 ## reference
 
 - https://cloud.google.com/solutions/reliable-task-scheduling-compute-engine
