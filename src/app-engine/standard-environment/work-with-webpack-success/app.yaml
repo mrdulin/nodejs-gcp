@@ -1,2 +1,9 @@
 runtime: nodejs8
 service: standard-env-work-with-webpack-success
+env_variables:
+  NODE_ENV: production
+handlers:
+  - url: /
+    script: auto
+  - url: /version
+    script: auto

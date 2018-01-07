@@ -1,4 +1,7 @@
 {
+  "engines": {
+    "node": ">=8.0.0"
+  },
   "name": "get-started",
   "version": "1.0.0",
   "description": "GAE flexible environment get started",

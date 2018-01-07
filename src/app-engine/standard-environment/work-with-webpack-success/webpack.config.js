@@ -1,10 +1,11 @@
-var nodeExternals = require('webpack-node-externals');
-var webpack = require('webpack');
-var path = require('path');
+const nodeExternals = require('webpack-node-externals');
+// const CleanWebpackPlugin = require('clean-webpack-plugin');
+const webpack = require('webpack');
+const path = require('path');
 
-var webpack_opts = {
+const webpack_opts = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-  entry: path.resolve(__dirname, 'src', 'main.ts'),
+  entry: './src/main.ts',
   target: 'node',
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -13,9 +14,10 @@ var webpack_opts = {
   },
   resolve: {
     extensions: ['.ts', '.js'],
-    modules: [path.resolve(__dirname, 'node_modules'), path.resolve(__dirname, 'src')]
+    modules: ['node_modules', 'src']
   },
   plugins: [
+    // new CleanWebpackPlugin(['dist'], { verbose: true, dry: false }),
     new webpack.LoaderOptionsPlugin({
       options: {
         test: /\.ts$/,
