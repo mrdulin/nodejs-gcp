@@ -1,0 +1,16 @@
+{
+  "name": "get-started",
+  "version": "1.0.0",
+  "description": "GAE flexible environment get started",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "deploy": "gcloud app deploy"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
