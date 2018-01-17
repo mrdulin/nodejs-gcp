@@ -1,0 +1,11 @@
+default: &default
+  - description: 'same schedule and target'
+    schedule: every 1 hours
+    target: reuse-cron-config
+
+cron: 
+  <<: *default
+  - description: 'a'
+    url: /cron/events/a/b
+  - description: 'b'
+    url: /cron/events/a/c

@@ -1,0 +1,2 @@
+service: reuse-cron-config
+runtime: nodejs8

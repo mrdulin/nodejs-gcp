@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const package = require('./package.json');
 
 console.log('version: ', package.version);
+console.log('process.env.NODE_ENV: ', process.env.NODE_ENV);
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));

@@ -1,13 +1,13 @@
 {
   "name": "get-started",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
     "predeploy": "npm version patch",
-    "deploy": "gcloud app deploy",
+    "deploy": "gcloud config configurations activate me && gcloud app deploy",
     "browse": "gcloud app browse"
   },
   "keywords": [],
