@@ -12,3 +12,4 @@
 - https://developers.google.com/identity/choose-auth
 - https://cloud.google.com/compute/docs/tutorials
 - https://cloud.google.com/appengine/docs/flexible/nodejs/using-websockets-and-session-affinity
+- https://cloud.google.com/kubernetes-engine/docs/concepts/configmap
