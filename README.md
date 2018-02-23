@@ -13,3 +13,6 @@
 - https://cloud.google.com/compute/docs/tutorials
 - https://cloud.google.com/appengine/docs/flexible/nodejs/using-websockets-and-session-affinity
 - https://cloud.google.com/kubernetes-engine/docs/concepts/configmap
+- https://cloud.google.com/kubernetes-engine/docs/how-to/stateless-apps#update
+- https://cloud.google.com/kubernetes-engine/docs/concepts/deployment
+- https://cloud.google.com/kubernetes-engine/docs/concepts/secret
