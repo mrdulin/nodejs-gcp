@@ -1,0 +1,7 @@
+runtime: nodejs8
+service: gke-cron-job-solution-3
+env_variables:
+  NODE_ENV: production
+handlers:
+  - url: /cron/*
+    script: auto

@@ -1,0 +1,5 @@
+cron:
+  # - description: 'Daily Report'
+  #   url: /cron/daily-report
+  #   schedule: every 1 mins
+  #   target: gke-cron-job-solution-3
