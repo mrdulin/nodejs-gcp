@@ -1,0 +1,16 @@
+{
+  "name": "with-ts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rm -rf dist",
+    "prebuild": "npm run clean",
+    "build": "../../../../node_modules/.bin/tsc -p .",
+    "start": "node ./dist/stackdriver/trace/with-ts/main.js"
+  },
+  "keywords": [],
+  "author": "mrdulin <novaline.dulin@gmail.com>",
+  "license": "MIT"
+}
