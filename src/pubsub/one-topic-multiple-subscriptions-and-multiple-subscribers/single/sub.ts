@@ -1,6 +1,6 @@
 import { SUB_A, SUB_B, init } from './init';
-import { pubsubClient } from '../../googlePubsub';
-import { logger } from '../../utils';
+import { pubsubClient } from '../../../googlePubsub';
+import { logger } from '../../../utils';
 
 async function main() {
   await init();

@@ -1,4 +1,4 @@
-import { createTopic, createSubscription } from '../../googlePubsub';
+import { createTopic, createSubscription } from '../../../googlePubsub';
 
 export const TOPIC = 'one-topic-multiple-subscriptions';
 export const SUB_A = `${TOPIC}-SUB_A`;

@@ -1,7 +1,7 @@
 import faker from 'faker';
 
 import { init, TOPIC } from './init';
-import { pub } from '../../googlePubsub';
+import { pub } from '../../../googlePubsub';
 
 async function main() {
   await init();
