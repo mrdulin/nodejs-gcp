@@ -1,5 +1,7 @@
 # get-started
 
+## 使用说明
+
 需要`GCP`认证
 
 ```bash
@@ -27,3 +29,7 @@
 2018-08-30T04:03:03.510Z[info] : "staging.<project name>.appspot.com"
 2018-08-30T04:03:03.510Z[info] : "us.artifacts.<project name>.appspot.com"
 ```
+
+## 参考
+
+- https://cloud.google.com/docs/authentication/getting-started
