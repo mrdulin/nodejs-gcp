@@ -1,0 +1,1 @@
+gcloud beta functions call helloPubSub --data '{"data":"dGVzdCB1c2Vy"}'
