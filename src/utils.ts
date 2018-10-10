@@ -24,4 +24,8 @@ function sleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export { logger, sleep };
+function coin(): boolean {
+  return Math.random() > 0.5;
+}
+
+export { logger, sleep, coin };

@@ -1,7 +1,7 @@
 import { Publisher } from '@google-cloud/pubsub';
 import faker from 'faker';
 
-import { logger, sleep } from '../../utils';
+import { logger, sleep, coin } from '../../utils';
 import { pubsubClient, topic } from './client';
 
 async function createTopic(topicName: string): Promise<any> {
@@ -22,16 +22,18 @@ async function createTopic(topicName: string): Promise<any> {
 
 function publishMessageHandler(p: Promise<any>) {
   return p
-    .then(results => {
-      const messageId = results[0];
-      logger.info(`Message ${messageId} published.`);
+    .then((msgId: string) => {
+      logger.info(`Message ${msgId} published.`);
     })
     .catch(err => logger.error(err));
 }
 
-function genRandomEmailDataBuffer(): Buffer {
-  const data = JSON.stringify({ randomEmail: faker.internet.email() });
-  return Buffer.from(data);
+function genRandomDataBuffer() {
+  const data = { randomEmail: faker.internet.email(), channel: coin() ? 'google' : 'fuckbook' };
+  const jsonString = JSON.stringify(data);
+  logger.info(`random data: ${jsonString}`);
+  const dataBuffer = Buffer.from(jsonString);
+  return dataBuffer;
 }
 
 async function main(options: any) {
@@ -45,15 +47,13 @@ async function main(options: any) {
   });
 
   logger.info('Start publish messages');
-  const wait: number = 2000;
-  publishMessageHandler(publisher.publish(genRandomEmailDataBuffer()));
-  logger.info(`Wait ${wait} millisecond`);
-  await sleep(wait);
-  publishMessageHandler(publisher.publish(genRandomEmailDataBuffer()));
-  logger.info(`Wait ${wait} millisecond`);
-  await sleep(wait);
-  publishMessageHandler(publisher.publish(genRandomEmailDataBuffer()));
+  for (let i = 0; i < options.repeat; i++) {
+    const dataBuffer: Buffer = genRandomDataBuffer();
+    publishMessageHandler(publisher.publish(dataBuffer));
+    logger.info(`Wait ${options.wait} millisecond`);
+    await sleep(options.wait);
+  }
   logger.info('Publish messages is finished');
 }
 
-main({ topic, maxMessages: 10, maxWaitTime: 10000 });
+main({ topic, maxMessages: 10, maxWaitTime: 10000, repeat: 3, wait: 2000 });
