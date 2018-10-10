@@ -1,5 +1,3 @@
-import Pubsub from '@google-cloud/pubsub';
-
 import { pubsubClient, topic, sub } from './client';
 import { logger } from '../../utils';
 

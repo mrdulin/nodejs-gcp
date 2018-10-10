@@ -1,4 +1,5 @@
 import { createLogger, transports, format, Logger } from 'winston';
+import _ from 'lodash';
 
 function createAppLogger(): Logger {
   const { combine, timestamp, printf, colorize } = format;
@@ -28,4 +29,18 @@ function coin(): boolean {
   return Math.random() > 0.5;
 }
 
-export { logger, sleep, coin };
+function genBufferMessage(message: object | string): Buffer {
+  let jsonString;
+  if (typeof message === 'string') {
+    jsonString = message;
+  } else if (_.isPlainObject(message)) {
+    jsonString = JSON.stringify(message);
+  } else {
+    throw new Error('Wrong data type');
+  }
+  logger.info(`Random data: ${jsonString}`);
+  const dataBuffer = Buffer.from(jsonString);
+  return dataBuffer;
+}
+
+export { logger, sleep, coin, genBufferMessage };

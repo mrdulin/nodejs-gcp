@@ -3,22 +3,7 @@ import faker from 'faker';
 
 import { logger, sleep, coin } from '../../utils';
 import { pubsubClient, topic } from './client';
-
-async function createTopic(topicName: string): Promise<any> {
-  const topicInstance = pubsubClient.topic(topicName);
-  const [exists] = await topicInstance.exists();
-  if (exists) {
-    logger.info(`${topicName} topic is existed`);
-    return;
-  }
-  return pubsubClient
-    .createTopic(topicName)
-    .then(data => {
-      logger.info(`Create topic ${topicName} successfully`);
-      return data;
-    })
-    .catch(err => logger.error(err));
-}
+import { createTopic } from '../../googlePubsub';
 
 function publishMessageHandler(p: Promise<any>) {
   return p
