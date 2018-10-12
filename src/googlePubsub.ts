@@ -3,7 +3,7 @@ import path from 'path';
 
 import { logger } from './utils';
 
-const pubsubClient = Pubsub({
+const pubsubClient: Pubsub.PubSub = Pubsub({
   projectId: 'just-aloe-212502',
   keyFilename: path.resolve(__dirname, '../.gcp/just-aloe-212502-4bf05c82cc24.json')
 });
@@ -24,4 +24,13 @@ async function createTopic(topicName: string): Promise<any> {
     .catch(err => logger.error(err));
 }
 
-export { createTopic, pubsubClient };
+async function createSubscription(topicName: string, subName: string) {
+  return pubsubClient
+    .createSubscription(topicName, subName)
+    .then(() => {
+      logger.info(`Create subscription:${subName} for topic:${topicName} successfully`);
+    })
+    .catch(err => logger.error(err));
+}
+
+export { createTopic, createSubscription, pubsubClient };

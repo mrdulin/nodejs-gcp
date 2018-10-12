@@ -1,4 +1,4 @@
-client.ts
+constants.ts
 deploy.sh
 pub.ts
 sub.ts

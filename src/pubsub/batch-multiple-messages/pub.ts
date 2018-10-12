@@ -2,8 +2,8 @@ import { Publisher } from '@google-cloud/pubsub';
 import faker from 'faker';
 
 import { logger, sleep, coin } from '../../utils';
-import { pubsubClient, topic } from './client';
-import { createTopic } from '../../googlePubsub';
+import { createTopic, pubsubClient } from '../../googlePubsub';
+import { topicName } from './constants';
 
 function publishMessageHandler(p: Promise<any>) {
   return p
@@ -41,4 +41,4 @@ async function main(options: any) {
   logger.info('Publish messages is finished');
 }
 
-main({ topic, maxMessages: 10, maxWaitTime: 10000, repeat: 3, wait: 2000 });
+main({ topic: topicName, maxMessages: 10, maxWaitTime: 10000, repeat: 3, wait: 2000 });

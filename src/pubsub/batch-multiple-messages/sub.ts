@@ -1,20 +1,10 @@
-import { pubsubClient, topic, sub } from './client';
 import { logger } from '../../utils';
-
-async function createSubscription(topicName: string, name: string) {
-  return pubsubClient
-    .createSubscription(topicName, name)
-    .then(() => {
-      logger.info(`Create subscription:${name} for topic:${topicName} successfully`);
-    })
-    .catch(err => logger.error(err));
-}
+import { createSubscription, pubsubClient } from '../../googlePubsub';
+import { topicName, subName } from './constants';
 
 async function main() {
-  await createSubscription(topic, sub);
-
-  const subscription = pubsubClient.subscription(sub);
-
+  await createSubscription(topicName, subName);
+  const subscription = pubsubClient.subscription(subName);
   subscription.on('message', msg => {
     const data = msg.data.toString();
     logger.info(`msg.id: ${msg.id}`);
