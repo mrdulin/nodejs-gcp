@@ -1,0 +1,12 @@
+{
+  "name": "timeout",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "../../../node_modules/.bin/tsc ./index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
