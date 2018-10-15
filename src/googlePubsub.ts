@@ -24,13 +24,41 @@ async function createTopic(topicName: string): Promise<any> {
     .catch(err => logger.error(err));
 }
 
-async function createSubscription(topicName: string, subName: string) {
+async function createSubscription(topicName: string, subName: string, verbose: boolean = true) {
   return pubsubClient
     .createSubscription(topicName, subName)
     .then(() => {
-      logger.info(`Create subscription:${subName} for topic:${topicName} successfully`);
+      if (verbose) {
+        logger.info(`Create subscription:${subName} for topic:${topicName} successfully`);
+      }
     })
-    .catch(err => logger.error(err));
+    .catch(err => {
+      if (verbose) {
+        logger.error(`Create subscription:${subName} for topic:${topicName} failed. ${err}`);
+      }
+    });
 }
 
-export { createTopic, createSubscription, pubsubClient };
+async function deleteSubsciption(topicName: string, subName: string, verbose: boolean = true) {
+  return pubsubClient
+    .subscription(subName)
+    .delete()
+    .then(() => {
+      if (verbose) {
+        logger.info(`Delete subscription:${subName} for topic:${topicName} successfully`);
+      }
+    })
+    .catch(err => {
+      if (verbose) {
+        logger.error(`Delete subscription:${subName} for topic:${topicName} failed. ${err}`);
+      }
+    });
+}
+
+async function clearAllMessages(topicName: string, subName: string) {
+  await deleteSubsciption(topicName, subName, false);
+  await createSubscription(topicName, subName, false);
+  logger.info(`Clear all messages of topic:${topicName} successfully`);
+}
+
+export { createTopic, createSubscription, deleteSubsciption, clearAllMessages, pubsubClient };
