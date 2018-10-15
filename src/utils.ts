@@ -43,4 +43,17 @@ function genBufferMessage(message: object | string): Buffer {
   return dataBuffer;
 }
 
-export { logger, sleep, coin, genBufferMessage };
+function serializePubsubEventData(message: any): string {
+  const dataBuffer = Buffer.from(JSON.stringify(message)).toString('base64');
+  return JSON.stringify({ data: dataBuffer });
+}
+
+function parsePubsubEventData(event) {
+  const pubsubMessage = event.data;
+  console.log('pubsubMessage: ', pubsubMessage);
+  const message = JSON.parse(Buffer.from(pubsubMessage.data, 'base64').toString());
+  console.log('message:', message);
+  return message;
+}
+
+export { logger, sleep, coin, genBufferMessage, serializePubsubEventData, parsePubsubEventData };

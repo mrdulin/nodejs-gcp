@@ -1,5 +1,4 @@
 const Pubsub = require('@google-cloud/pubsub');
-const path = require('path');
 
 const pubsub = new Pubsub();
 const topic = 'retry';
@@ -35,9 +34,17 @@ exports.retryFunction = (event, callback) => {
           callback(err);
         });
     } else {
-      publisher(deadletter).publish(toBufferMessage({ errMsg: genRandomErrorMessage() }));
-      console.log('Bussiness failed and retry times is out');
-      callback();
+      console.error('Bussiness failed and retry times is out');
+      publisher(deadletter)
+        .publish(toBufferMessage({ errMsg: genRandomErrorMessage() }))
+        .then(() => {
+          console.log(`Publish message to ${deadletter} topic successfully`);
+          callback();
+        })
+        .catch(_ => {
+          console.error(`Publish message to ${deadletter} topic failed: `, err);
+          callback();
+        });
     }
   } else {
     console.log('Bussiness success');
