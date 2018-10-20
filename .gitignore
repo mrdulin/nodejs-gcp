@@ -1,3 +1,4 @@
 node_modules/
 .gcp
 .DS_Store
+.env.yml
