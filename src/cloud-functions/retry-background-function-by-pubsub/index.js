@@ -4,14 +4,14 @@ const moment = require('moment');
 const pubsub = new Pubsub();
 const RETRY_TOPIC = 'retry';
 const DEADLETTER_TOPIC = 'deadletter';
-const MAX_RETRY = 4;
-const RETRY_WAIT = 10 * 1000;
+const MAX_RETRY = process.env.MAX_RETRY || 4;
+const RETRY_WAIT = process.env.RETRY_WAIT || 10 * 1000;
 
 function publisher(topic) {
   return pubsub.topic(topic).publisher();
 }
 
-const coin = () => Math.random() > 0.5;
+const coin = () => Math.random() > 0.3;
 const genRandomErrorMessage = () => `err msg - ${Math.random()}`;
 const toBufferMessage = msg => Buffer.from(JSON.stringify(msg));
 const parsePubsubEventData = data => JSON.parse(Buffer.from(data, 'base64').toString());
@@ -28,12 +28,13 @@ const readableTime = mills => {
 };
 
 function retry(opts, callback) {
-  const { data, topic } = opts;
+  const { data, topic, wait, maxRetry } = opts;
+  console.log('wait: ', wait);
   let timer;
   data.retryTimes = Number.parseInt(data.retryTimes, 10);
-  if (typeof data.retryTimes === 'number' && data.retryTimes < MAX_RETRY) {
+  if (typeof data.retryTimes === 'number' && data.retryTimes < maxRetry) {
     data.retryTimes += 1;
-    console.log(`Retry will start in ${readableTime(RETRY_WAIT)}`);
+    console.log('Retry will start in ', readableTime(wait));
     timer = setTimeout(() => {
       console.log('Start to retry...');
       publisher(topic)
@@ -46,7 +47,7 @@ function retry(opts, callback) {
           console.error('Publisher retry publish error:', err);
           callback(err);
         });
-    }, RETRY_WAIT);
+    }, wait);
     return timer;
   } else {
     console.error('Bussiness failed and retry times is out.');
@@ -84,7 +85,7 @@ exports.retryFunction = (event, callback) => {
   let retryId;
   if (exceptionHappen) {
     console.log('exception happened');
-    retryId = retry({ data, topic: RETRY_TOPIC }, callback);
+    retryId = retry({ data, topic: RETRY_TOPIC, wait: RETRY_WAIT, maxRetry: MAX_RETRY }, callback);
   } else {
     console.log('Bussiness success');
     stopRetry(retryId);
