@@ -1,3 +1,4 @@
 client.ts
 deploy.sh
 pub.ts
+node_modules
