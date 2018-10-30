@@ -8,14 +8,18 @@ async function getMessages() {
   const maxMessages = 1;
   const request = {
     subscription: formattedSubscription,
-    maxMessages
+    maxMessages,
+    returnImmediately: true
   };
   try {
+    console.log('start to pull message');
     const responses = await subscribeClient.pull(request);
     const response = responses[0];
     if ('receivedMessages' in response) {
       console.debug('number msgs: %s', response.receivedMessages.length);
       return response.receivedMessages;
+    } else {
+      throw new Error('no message found');
     }
   } catch (error) {
     console.log(error);
@@ -50,6 +54,11 @@ async function processMessages(msgs) {
 }
 
 async function runTask(msg) {
+  console.group('====msg====');
+  console.log(msg.data);
+  console.log(Buffer.from(msg.data).toString());
+  console.groupEnd();
+
   try {
     await pubsubClient
       .topic(createEmailTopicName)

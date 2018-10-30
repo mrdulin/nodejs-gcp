@@ -5,13 +5,13 @@ const { getMessages, processMessages } = require('./cron-executor');
 const app = express();
 
 app.get('/', (req, res) => {
-  res.send('GAE Cron Service test');
+  res.sendStatus(200);
 });
 
 app.get('/cron/events/createEmailRetry', async (req, res) => {
   if (process.env.NODE_ENV === 'production') {
     if (req.get('X-Appengine-Cron') !== 'true') {
-      return res.status(403);
+      return res.sendStatus(403);
     }
   }
 
@@ -23,7 +23,7 @@ app.get('/cron/events/createEmailRetry', async (req, res) => {
   } catch (error) {
     console.log('error happened', error);
   } finally {
-    res.status(200);
+    res.sendStatus(200);
   }
 });
 

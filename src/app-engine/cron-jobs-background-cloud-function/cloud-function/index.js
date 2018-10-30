@@ -1,7 +1,6 @@
 function cronJobsBackgroundFunction(event, callback) {
   const pubsubMessage = event.data;
-  const data = Buffer.from(pubsubMessage.data).toString();
-  const msg = Buffer.from(data).toString();
+  const data = Buffer.from(pubsubMessage.data, 'base64').toString();
   console.log('data: ', data);
   callback();
 }
