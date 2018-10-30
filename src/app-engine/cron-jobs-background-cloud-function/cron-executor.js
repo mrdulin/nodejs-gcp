@@ -1,4 +1,4 @@
-const { subscribeClient, createEmailRetrySubName, createEmailTopicName, pubsubClient } = require('./pubsub');
+const { subscribeClient, createEmailRetrySubName, createEmailTopicName, pub } = require('./pubsub');
 const { getEnvVars } = require('./metadata');
 
 async function getMessages() {
@@ -37,7 +37,8 @@ async function processMessages(msgs) {
     console.log('pubsubMessage: ', pubsubMessage);
     if (pubsubMessage) {
       const ackIds = [];
-      runTask(pubsubMessage);
+      const msg = updateRetryTimes(pubsubMessage);
+      runTask(msg);
       ackIds.push(receivedMessage.ackId);
       const request = {
         subscription: `projects/${projectId}/subscriptions/${createEmailRetrySubName}`,
@@ -53,21 +54,43 @@ async function processMessages(msgs) {
   }
 }
 
-async function runTask(msg) {
-  console.group('====msg====');
-  console.log(msg.data);
-  console.log(Buffer.from(msg.data).toString());
-  console.groupEnd();
-
-  try {
-    await pubsubClient
-      .topic(createEmailTopicName)
-      .publisher()
-      .publish(msg.data);
-    console.log('publish message success');
-  } catch (error) {
-    console.log('publish message error.', error);
+function parseMessage(msg) {
+  if (msg && msg.data) {
+    try {
+      const json = JSON.parse(Buffer.from(msg.data).toString());
+      console.group('====msg====');
+      console.log(msg.data);
+      console.log(json);
+      console.log(typeof json);
+      console.groupEnd();
+      return json;
+    } catch (error) {
+      console.error('parse message failed.', error);
+      return {};
+    }
+  } else {
+    console.error('parse message failed. please check msg');
   }
+}
+
+function updateRetryTimes(msg) {
+  const data = parseMessage(msg);
+  console.log('updateRetryTimes data:', data);
+  if (data) {
+    if (typeof data.retryTimes === 'undefined') {
+      data.retryTimes = 0;
+    }
+    console.log(`update msg: ${msg.messageId} retry times`);
+    data.retryTimes += 1;
+    console.log(`msg: ${msg.messageId} retry times is ${data.retryTimes}`);
+    return data;
+  } else {
+    console.error('update msg retry times failed. msg.data is required');
+  }
+}
+
+async function runTask(msg) {
+  await pub(createEmailTopicName, msg);
 }
 
 module.exports = {

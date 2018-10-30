@@ -19,6 +19,8 @@ const createEmailRetrySubName = 'createEmail-retry-sub';
 const createEmailTopicName = 'createEmail';
 const createEmailSubName = 'createEmail-sub';
 
+const deadletterTopicName = 'deadletter';
+
 async function createSubscription(topicName, subName) {
   const subscription = pubsubClient.topic(topicName).subscription(subName);
   const [exists] = await subscription.exists();
@@ -50,6 +52,19 @@ async function createTopic(topicName) {
     .catch(err => console.log(err));
 }
 
+async function pub(topicName, message) {
+  try {
+    const dataBuf = Buffer.from(JSON.stringify(message));
+    await pubsubClient
+      .topic(topicName)
+      .publisher()
+      .publish(dataBuf);
+    console.log(`publish message to topic:${topicName} success.`);
+  } catch (error) {
+    console.error(`publish message to topic:${topicName} failed.`, error);
+  }
+}
+
 async function init() {
   await createTopic(createEmailRetryTopicName);
   await createSubscription(createEmailRetryTopicName, createEmailRetrySubName);
@@ -65,5 +80,7 @@ module.exports = {
   createEmailRetryTopicName,
   createEmailRetrySubName,
   createEmailTopicName,
-  createEmailSubName
+  createEmailSubName,
+  deadletterTopicName,
+  pub
 };
