@@ -1,0 +1,2 @@
+runtime: nodejs8
+service: standard-env-work-with-webpack-success
