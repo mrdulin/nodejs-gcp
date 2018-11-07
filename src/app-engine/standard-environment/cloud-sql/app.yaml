@@ -1,0 +1,7 @@
+service: gae-standard-cloud-sql
+runtime: nodejs8
+env_variables:
+  SQL_USER: root
+  SQL_PASSWORD: 7G3O6CIjFHlrjhLi
+  SQL_DATABASE: nodejs-gcp
+  INSTANCE_CONNECTION_NAME: just-aloe-212502:us-central1:nodejs-gcp

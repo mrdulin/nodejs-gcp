@@ -1,0 +1,23 @@
+{
+  "name": "handle-env",
+  "version": "1.0.7",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "predeploy": "npm version patch",
+    "deploy": "gcloud config configurations activate me && gcloud app deploy",
+    "browse": "gcloud app browse"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^4.0.3",
+    "dotenv": "^6.1.0"
+  }
+}
