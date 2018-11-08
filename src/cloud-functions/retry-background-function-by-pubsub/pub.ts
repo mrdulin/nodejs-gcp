@@ -17,7 +17,7 @@ async function main() {
     .then((msgId: string) => {
       logger.info(`Message ${msgId} published.`);
     })
-    .catch(err => logger.error(err));
+    .catch((err) => logger.error(err));
 }
 
 main();

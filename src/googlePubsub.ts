@@ -1,7 +1,7 @@
-import Pubsub from '@google-cloud/pubsub';
+import Pubsub, { Publisher } from '@google-cloud/pubsub';
 import path from 'path';
 
-import { logger } from './utils';
+import { logger, genBufferMessage } from './utils';
 
 const pubsubClient: Pubsub.PubSub = Pubsub({
   projectId: 'just-aloe-212502',
@@ -17,11 +17,11 @@ async function createTopic(topicName: string): Promise<any> {
   }
   return pubsubClient
     .createTopic(topicName)
-    .then(data => {
+    .then((data) => {
       logger.info(`Create topic ${topicName} successfully`);
       return data;
     })
-    .catch(err => logger.error(err));
+    .catch((err) => logger.error(err));
 }
 
 async function createSubscription(topicName: string, subName: string, verbose: boolean = true) {
@@ -32,7 +32,7 @@ async function createSubscription(topicName: string, subName: string, verbose: b
         logger.info(`Create subscription:${subName} for topic:${topicName} successfully`);
       }
     })
-    .catch(err => {
+    .catch((err) => {
       if (verbose) {
         logger.error(`Create subscription:${subName} for topic:${topicName} failed. ${err}`);
       }
@@ -48,7 +48,7 @@ async function deleteSubsciption(topicName: string, subName: string, verbose: bo
         logger.info(`Delete subscription:${subName} for topic:${topicName} successfully`);
       }
     })
-    .catch(err => {
+    .catch((err) => {
       if (verbose) {
         logger.error(`Delete subscription:${subName} for topic:${topicName} failed. ${err}`);
       }
@@ -61,4 +61,15 @@ async function clearAllMessages(topicName: string, subName: string) {
   logger.info(`Clear all messages of topic:${topicName} successfully`);
 }
 
-export { createTopic, createSubscription, deleteSubsciption, clearAllMessages, pubsubClient };
+async function pub(topicName: string, message: any, attributes: Publisher.Attributes) {
+  const buf: Buffer = genBufferMessage(message);
+  return pubsubClient
+    .topic(topicName)
+    .publisher()
+    .publish(buf, attributes)
+    .then((messageId) => {
+      logger.info(`Message ${messageId} published`);
+    });
+}
+
+export { createTopic, createSubscription, deleteSubsciption, clearAllMessages, pubsubClient, pub };
