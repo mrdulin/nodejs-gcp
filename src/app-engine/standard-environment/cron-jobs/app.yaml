@@ -1,2 +1,7 @@
 runtime: nodejs8
 service: cron-service
+handlers:
+  - url: /
+    script: auto
+  - url: /cron/events/(.*)/(.*)
+    script: auto

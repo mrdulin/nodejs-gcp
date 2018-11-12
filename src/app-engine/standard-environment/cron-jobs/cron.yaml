@@ -1,5 +1,9 @@
 cron:
-# - description: 'sync job'
-#   url: /tasks/sync
-#   schedule: every 1 minutes
-#   target: cron-service
+  # - description: 'sync job'
+  #   url: /tasks/sync
+  #   schedule: every 1 hours
+  #   target: cron-service
+  # - description: 'retry'
+  #   url: /cron/events/email/retry-send-email
+  #   schedule: every 1 hours
+  #   target: cron-service
