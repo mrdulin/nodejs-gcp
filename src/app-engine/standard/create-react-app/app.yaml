@@ -1,0 +1,7 @@
+service: create-react-app
+runtime: nodejs8
+env_variables:
+  NODE_ENV: development
+handlers:
+  - url: /
+    static_dir: build
