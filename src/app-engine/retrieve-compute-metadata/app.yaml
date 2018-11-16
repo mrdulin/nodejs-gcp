@@ -1,0 +1,2 @@
+service: retrieve-compute-metadata
+runtime: nodejs8
