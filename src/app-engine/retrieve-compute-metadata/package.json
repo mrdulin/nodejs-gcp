@@ -1,6 +1,6 @@
 {
   "name": "retrieve-compute-metadata",
-  "version": "1.0.18",
+  "version": "1.0.20",
   "description": "",
   "main": "server.js",
   "scripts": {

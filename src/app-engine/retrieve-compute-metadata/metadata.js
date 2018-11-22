@@ -1,7 +1,8 @@
 const request = require('request-promise');
 
 async function getMetaData(attr) {
-  const url = `http://metadata.google.internal/computeMetadata/v1beta/project/attributes/${attr}`;
+  // const url = `http://metadata.google.internal/computeMetadata/v1beta/project/attributes/${attr}`;
+  const url = `http://metadata.google.internal/computeMetadata/v1/project/attributes/${attr}`;
   // const url = `http://metadata/computeMetadata/v1/project/attributes/${attr}`;
   const options = {
     headers: {
