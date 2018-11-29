@@ -5,7 +5,7 @@ import { logger, genBufferMessage } from './utils';
 
 const options: GCloudConfiguration = {} || {
   projectId: 'just-aloe-212502',
-  keyFilename: path.resolve(__dirname, '../.gcp/just-aloe-212502-4bf05c82cc24.json')
+  keyFilename: path.resolve(__dirname, '../.gcp/shadowsocks-218808-7f8e109f4089.json')
 };
 const pubsubClient: Pubsub.PubSub = Pubsub(options);
 const subscriberClient = new (Pubsub.v1 as any).SubscriberClient(options);
