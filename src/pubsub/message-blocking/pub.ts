@@ -1,13 +1,14 @@
 import { init, TOPIC } from './init';
 import { pub } from '../../googlePubsub';
+import faker from 'faker';
 
 async function main() {
   await init();
 
   setInterval(() => {
-    const message = `Hello, world! - ${Date.now()}`;
+    const message = { data: faker.lorem.word() };
     pub(TOPIC, message);
-  }, 1000);
+  }, 5000);
 }
 
 main();

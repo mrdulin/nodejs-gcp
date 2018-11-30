@@ -13,6 +13,10 @@ async function main() {
     logger.info(`subscriber B receieve message from sub:${SUB}. message: ${JSON.stringify(message)}`);
     message.ack();
   });
+  pubsubClient.subscription(SUB).on('message', (message) => {
+    logger.info(`subscriber C receieve message from sub:${SUB}. message: ${JSON.stringify(message)}`);
+    message.ack();
+  });
 }
 
 main();

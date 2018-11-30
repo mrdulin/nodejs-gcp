@@ -4,7 +4,7 @@ import path from 'path';
 import { logger, genBufferMessage } from './utils';
 
 const options: GCloudConfiguration = {} || {
-  projectId: 'just-aloe-212502',
+  projectId: 'shadowsocks-218808',
   keyFilename: path.resolve(__dirname, '../.gcp/shadowsocks-218808-7f8e109f4089.json')
 };
 const pubsubClient: Pubsub.PubSub = Pubsub(options);
@@ -85,14 +85,14 @@ async function getProjectId() {
   });
 }
 
-async function pullMessages(subName: string) {
+async function pullMessages(subName: string, maxMessages: number) {
   const projectId = await getProjectId();
   if (!projectId) {
     logger.error('projectId is required');
   }
   const request = {
     subscription: `projects/${projectId}/subscriptions/${subName}`,
-    maxMessages: 1,
+    maxMessages,
     returnImmediately: true
   };
 
@@ -103,7 +103,14 @@ async function pullMessages(subName: string) {
       let messages = [];
       if (response.receivedMessages) {
         messages = response.receivedMessages.map(({ ackId, message }) => {
-          message.data = JSON.parse(Buffer.from(message.data, 'base64').toString());
+          const dataBase64 = message.data ? message.data : message;
+          const dataString = Buffer.from(dataBase64, 'base64').toString();
+          try {
+            message.data = JSON.parse(dataString);
+          } catch (error) {
+            message.data = dataString;
+          }
+          message.ackId = ackId;
           return message;
         });
       }
