@@ -1,0 +1,21 @@
+{
+  "name": "get-started",
+  "version": "1.0.9",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "predeploy": "npm version patch",
+    "deploy": "gcloud app deploy",
+    "browse": "gcloud app browse"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/debug-agent": "^3.0.1",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4"
+  }
+}
