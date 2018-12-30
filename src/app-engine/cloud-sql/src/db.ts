@@ -5,16 +5,21 @@ function connect(): Knex {
   const config: MySqlConnectionConfig = {
     user: SQL_USER,
     password: SQL_PASSWORD,
-    database: SQL_DATABASE,
-    socketPath: ''
+    database: SQL_DATABASE
+    // socketPath: ''
   };
 
+  // GCP 偷偷改文档，这是以前的数据库连接方式
+  // if (INSTANCE_CONNECTION_NAME && NODE_ENV === 'production') {
+  //   config.socketPath = `/cloudsql/${process.env.INSTANCE_CONNECTION_NAME}`;
+  // }
+
   if (INSTANCE_CONNECTION_NAME && NODE_ENV === 'production') {
-    config.socketPath = `/cloudsql/${process.env.INSTANCE_CONNECTION_NAME}`;
+    config.host = `/cloudsql/${process.env.INSTANCE_CONNECTION_NAME}`;
   }
 
   const knex: Knex = Knex({
-    client: 'mysql',
+    client: 'pg',
     connection: config
   });
   return knex;

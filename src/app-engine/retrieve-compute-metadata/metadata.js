@@ -52,4 +52,6 @@ async function retrieveMetaData() {
   };
 }
 
-module.exports = { getMetaData, retrieveMetaData };
+const metadata = (async () => await retrieveMetaData())();
+
+module.exports = { getMetaData, retrieveMetaData, metadata };

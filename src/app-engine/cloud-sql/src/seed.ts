@@ -1,7 +1,7 @@
 import Knex, { TableBuilder } from 'knex';
 
 import { connect } from './db';
-import './env';
+// import './env';
 
 function createTables(knex: Knex) {
   knex.schema
@@ -22,9 +22,9 @@ function createTables(knex: Knex) {
     });
 }
 
-function seed() {
+async function seed() {
   const knex: Knex = connect();
-  createTables(knex);
+  await createTables(knex);
 }
 
-seed();
+export { seed };
