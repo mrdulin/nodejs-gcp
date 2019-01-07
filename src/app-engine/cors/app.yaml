@@ -1,0 +1,8 @@
+service: cors
+runtime: nodejs8
+handlers:
+  - url: /images
+    static_dir: public/images
+    expiration: 1s
+    http_headers:
+      Access-Control-Allow-Origin: https://static-files-dot-shadowsocks-218808.appspot.com

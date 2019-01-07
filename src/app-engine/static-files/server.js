@@ -7,8 +7,6 @@ function createServer() {
   app.set('views', path.resolve(__dirname, './views'));
   app.set('view engine', 'ejs');
 
-  // app.use('/static', express.static(path.resolve(__dirname, 'public')));
-
   app.get('/', (req, res) => {
     res.render('index');
   });

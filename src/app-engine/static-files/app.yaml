@@ -6,3 +6,4 @@ env_variables:
 handlers:
   - url: /static
     static_dir: public
+    expiration: 1s
