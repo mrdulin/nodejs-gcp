@@ -9,7 +9,8 @@
     "object-literal-sort-keys": false,
     "arrow-parens": false,
     "object-literal-key-quotes": false,
-    "no-console": false
+    "no-console": false,
+    "only-arrow-functions": false
   },
   "rulesDirectory": []
 }
