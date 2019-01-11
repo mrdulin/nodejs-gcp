@@ -3,11 +3,19 @@
 build cloud sql proxy image:
 
 ```bash
-docker build -t csp:1.0 .
+docker build -t -f ./Dockerfile csp:1.0 .
 ```
 
-run cloud sql proxy:
+run cloud sql proxy in a terminal session window:
 
 ```bash
-docker run -v /Users/ldu020/workspace/nimbus-cedar/cedar-graphql-api/.gcp:/.gcp -e GOOGLE_APPLICATION_CREDENTIALS=/.gcp/pg-gx-e-app-700458-98b46018b4ea.json csp:1.0 ./cloud_sql_proxy -instances=pg-gx-e-app-700458:us-central1:cedar-database=tcp:5432
+docker run -v ./.gcp:/.gcp -e GOOGLE_APPLICATION_CREDENTIALS=/.gcp/<xxx-credential.json> <image name>:<image tag> ./cloud_sql_proxy -instances=<INSTANCE_CONNECTION_NAME>=tcp:5432
 ```
+
+open a new terminal session window:
+
+```bash
+docker exec -it <Container ID> psql "host=127.0.0.1 port=5432 sslmode=disable dbname=<DB_NAME> user=<USER_NAME>"
+```
+
+Enter database password
