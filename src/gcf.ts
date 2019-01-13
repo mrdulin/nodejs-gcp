@@ -16,13 +16,20 @@ class CloudFunctionService {
   }
   public parsePubsubEventData<Body>(event: IPubsubEvent): IMessage<Body> {
     const pubsubMessage = event.data;
+    let message = this.defaultMessage;
     if (!pubsubMessage.data) {
       console.error(new Error('event.data.data is required. Return default message.'));
       return this.defaultMessage;
     }
     console.log('pubsubMessage: ', pubsubMessage);
-    const message = JSON.parse(Buffer.from(pubsubMessage.data, 'base64').toString());
-    console.log('message:', message);
+    try {
+      message = JSON.parse(Buffer.from(pubsubMessage.data, 'base64').toString());
+      console.log('message:', message);
+      return message;
+    } catch (error) {
+      console.error('JSON parse message failed.');
+      console.error(error);
+    }
     return message;
   }
 
