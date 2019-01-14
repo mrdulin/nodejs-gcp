@@ -74,6 +74,15 @@ async function pub(topicName: string, message: any, attributes?: Publisher.Attri
     });
 }
 
+async function sub(subscriptionName: string, handler: (message: any) => void) {
+  const subscription = pubsubClient.subscription(subscriptionName);
+  subscription.on('message', handler);
+  subscription.on('error', (error) => {
+    logger.error('subscription error');
+    logger.error(error);
+  });
+}
+
 async function getProjectId() {
   return new Promise((resolve, reject) => {
     subscriberClient.getProjectId((err, projectId) => {
@@ -128,6 +137,7 @@ export {
   clearAllMessages,
   pubsubClient,
   pub,
+  sub,
   subscriberClient,
   pullMessages
 };

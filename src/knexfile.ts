@@ -1,4 +1,3 @@
-import { IKnexfileSettings } from './@types';
 import dotenv, { DotenvConfigOptions, DotenvConfigOutput } from 'dotenv';
 import path from 'path';
 import fs from 'fs';
@@ -9,9 +8,9 @@ const dotenvConfig: DotenvConfigOptions = {
 const dotenvOutput: DotenvConfigOutput = dotenv.config(dotenvConfig);
 console.log(dotenvOutput.error ? dotenvOutput.error : dotenvOutput.parsed);
 
-const config = {
+const config: any = {
   development: {
-    client: 'postgresql',
+    client: 'pg',
     connection: {
       database: 'my_db',
       user: 'username',
@@ -30,17 +29,12 @@ const config = {
   },
 
   production: {
-    client: 'postgresql',
+    client: 'pg',
     connection: {
-      host: process.env.SQL_HOST,
+      // host: `/cloudsql/${process.env.SQL_INSTANCE_CONNECTION_NAME}`,
       database: process.env.SQL_DATABASE,
       user: process.env.SQL_USER,
-      password: process.env.SQL_PASSWORD,
-      ssl: {
-        ca: fs.readFileSync(path.resolve(__dirname, '../ssl/cloud-sql/server-ca.pem')),
-        key: fs.readFileSync(path.resolve(__dirname, '../ssl/cloud-sql/client-key.pem')),
-        cert: fs.readFileSync(path.resolve(__dirname, '../ssl/cloud-sql/client-cert.pem'))
-      }
+      password: process.env.SQL_PASSWORD
     },
     pool: {
       min: 2,
@@ -54,5 +48,15 @@ const config = {
     }
   }
 };
+
+if (process.env.SQL_SSL === 'true') {
+  config.production.connection.ssl = {
+    ca: fs.readFileSync(path.resolve(__dirname, '../ssl/cloud-sql/server-ca.pem')),
+    key: fs.readFileSync(path.resolve(__dirname, '../ssl/cloud-sql/client-key.pem')),
+    cert: fs.readFileSync(path.resolve(__dirname, '../ssl/cloud-sql/client-cert.pem'))
+  };
+}
+
+console.log('knex config: ', config);
 
 export default config;
