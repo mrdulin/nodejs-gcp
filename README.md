@@ -7,3 +7,6 @@
 - https://cloud.google.com/solutions/
 - https://cloud.google.com/pubsub/architecture
 - https://cloud.google.com/community/tutorials/
+- https://cloud.google.com/functions/docs/sql
+- https://developers.google.com/identity/protocols/OAuth2WebServer
+- https://developers.google.com/identity/choose-auth

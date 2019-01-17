@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Front-End</title>
+  </head>
+  <body>
+    <button type="button" id="login">Login</button>
+    <script>
+      window.onload = function() {
+        const $btn = document.getElementById('login');
+        $btn.addEventListener('click', clickHandler);
+      };
+
+      function clickHandler() {
+        const url = `https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/drive.metadata.readonly&access_type=offline&include_granted_scopes=true&state=state_parameter_passthrough_value&redirect_uri=http://localhost:8080/oauth/callback&response_type=code&client_id=16536262744-7ob1su0o1hn4t79482e41mirhc102mvh.apps.googleusercontent.com`;
+        window.location.href = url;
+      }
+    </script>
+  </body>
+</html>
