@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>websocket 测试</title>
+  </head>
+
+  <body>
+    <button type="button" id="say">say</button>
+    <div id="user-profile">
+      <p>user name: <span id="userName"></span></p>
+      <p>user email: <span id="userEmail"></span></p>
+    </div>
+    <script src="/lib/socket.io-client/dist/socket.io.js"></script>
+    <script src="/lib/faker/index.js"></script>
+    <script>
+      window.onload = function() {
+        const doc = document;
+        const $sayBtn = doc.getElementById('say');
+        const $userName = doc.getElementById('userName');
+        const $userEmail = doc.getElementById('userEmail');
+        const socket = io.connect('//localhost:3000');
+
+        socket.on('user', function(user) {
+          $userName.textContent = user.name;
+          $userEmail.textContent = user.email;
+        });
+
+        $sayBtn.addEventListener('click', say, false);
+
+        function say() {
+          const message = faker.lorem.sentence;
+          socket.emit('say', message);
+        }
+      };
+    </script>
+  </body>
+</html>

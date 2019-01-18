@@ -1,0 +1,17 @@
+{
+  "name": "web-server-websocket-apps",
+  "version": "1.0.0",
+  "description": "Deploying to GCE for websocket testing",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./src/server.js"
+  },
+  "keywords": [],
+  "author": "mrdulin <novaline.dulin@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.4",
+    "faker": "^4.1.0",
+    "socket.io": "^2.2.0"
+  }
+}
