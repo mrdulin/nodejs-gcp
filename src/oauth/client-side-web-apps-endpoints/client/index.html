@@ -15,7 +15,14 @@
       };
 
       function clickHandler() {
-        const url = `https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/drive.metadata.readonly&access_type=offline&include_granted_scopes=true&state=state_parameter_passthrough_value&redirect_uri=http://localhost:8080/oauth/callback&response_type=code&client_id=16536262744-7ob1su0o1hn4t79482e41mirhc102mvh.apps.googleusercontent.com`;
+        const data = {
+          scope: 'https://www.googleapis.com/auth/drive.metadata.readonly',
+          access_type: 'offline',
+          include_granted_scopes: true,
+          state:
+        };
+        const querystring = new URLSearchParams();
+        const url = `https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&include_granted_scopes=true&state=state_parameter_passthrough_value&redirect_uri=http://localhost:8080/oauth/callback&response_type=code&client_id=16536262744-7ob1su0o1hn4t79482e41mirhc102mvh.apps.googleusercontent.com`;
         window.location.href = url;
       }
     </script>
