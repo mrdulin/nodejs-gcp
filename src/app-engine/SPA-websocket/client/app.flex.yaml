@@ -1,0 +1,20 @@
+service: spa-websocket-front-end
+runtime: nodejs
+env: flex
+
+# https://facebook.github.io/create-react-app/docs/adding-custom-environment-variables
+# env_variables:
+# NODE_ENV: production
+# SOCKET_URI: http://spa-websocket-back-end-dot-shadowsocks-218808.appspot.com
+manual_scaling:
+  instances: 1
+resources:
+  cpu: 1
+  memory_gb: 0.5
+  disk_size_gb: 10
+skip_files:
+  - src
+  - public
+  - tsconfig.json
+  - .gitignore
+  - node_modules

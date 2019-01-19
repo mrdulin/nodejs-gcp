@@ -1,7 +1,8 @@
 service: create-react-app
 runtime: nodejs8
-env_variables:
-  NODE_ENV: development
+# env_variables:
+# NODE_ENV: development
+# API_ENDPOINT: github.com
 handlers:
   - url: /
     static_files: build/index.html

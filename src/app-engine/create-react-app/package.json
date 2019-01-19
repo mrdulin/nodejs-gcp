@@ -1,6 +1,6 @@
 {
   "name": "create-react-app",
-  "version": "0.1.5",
+  "version": "0.1.9",
   "private": true,
   "dependencies": {
     "react": "^16.6.3",
@@ -8,12 +8,13 @@
     "react-scripts": "2.1.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "serve": "npx serve -l 3000 -s build",
+    "start:local": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "npm version patch && gcloud app deploy"
+    "predeploy": "npm run build && npm version patch",
+    "deploy": "gcloud app deploy"
   },
   "eslintConfig": {
     "extends": "react-app"

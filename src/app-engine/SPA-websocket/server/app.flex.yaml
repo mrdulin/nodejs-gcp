@@ -1,4 +1,4 @@
-service: websocket-flex-env
+service: spa-websocket-back-end
 runtime: nodejs
 env: flex
 env_variables:
@@ -9,3 +9,5 @@ resources:
   cpu: 1
   memory_gb: 0.5
   disk_size_gb: 10
+skip_files:
+  - ^node_modules$

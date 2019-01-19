@@ -11,3 +11,4 @@
 - https://developers.google.com/identity/protocols/OAuth2WebServer
 - https://developers.google.com/identity/choose-auth
 - https://cloud.google.com/compute/docs/tutorials
+- https://cloud.google.com/appengine/docs/flexible/nodejs/using-websockets-and-session-affinity
