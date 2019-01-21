@@ -11,7 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.16.4",
-    "faker": "^4.1.0",
+    "faker": "^3.1.0",
     "socket.io": "^2.2.0"
   }
 }

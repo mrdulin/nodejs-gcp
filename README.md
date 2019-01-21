@@ -10,3 +10,4 @@
 - https://cloud.google.com/functions/docs/sql
 - https://developers.google.com/identity/protocols/OAuth2WebServer
 - https://developers.google.com/identity/choose-auth
+- https://cloud.google.com/compute/docs/tutorials

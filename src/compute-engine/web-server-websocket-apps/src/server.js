@@ -19,6 +19,7 @@ io.on('connection', (socket) => {
   const user = { name: faker.name.findName(), email: faker.internet.email() };
   socket.emit('user', user);
   socket.on('say', (data) => {
+    console.log('say: ', data);
     socket.send(data);
   });
 });
