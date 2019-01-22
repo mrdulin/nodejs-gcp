@@ -812,7 +812,7 @@
   version "23.3.13"
   resolved "http://registry.npm.taobao.org/@types/jest/download/@types/jest-23.3.13.tgz#c81484b6f4ca007bb09887ed15ecb3286d58f928"
 
-"@types/node@*", "@types/node@10.12.18":
+"@types/node@10.12.18":
   version "10.12.18"
   resolved "http://registry.npm.taobao.org/@types/node/download/@types/node-10.12.18.tgz#1d3ca764718915584fcd9f6344621b7672665c67"
 
@@ -840,12 +840,6 @@
 "@types/socket.io-client@^1.4.32":
   version "1.4.32"
   resolved "http://registry.npm.taobao.org/@types/socket.io-client/download/@types/socket.io-client-1.4.32.tgz#988a65a0386c274b1c22a55377fab6a30789ac14"
-
-"@types/socket.io@^2.1.2":
-  version "2.1.2"
-  resolved "http://registry.npm.taobao.org/@types/socket.io/download/@types/socket.io-2.1.2.tgz#7165c2587cc3b86b44aa78e2a0060140551de211"
-  dependencies:
-    "@types/node" "*"
 
 "@types/tapable@1.0.2":
   version "1.0.2"
