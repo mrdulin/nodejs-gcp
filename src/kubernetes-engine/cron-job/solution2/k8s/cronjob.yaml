@@ -5,22 +5,31 @@ metadata:
 spec:
   schedule: '*/1 * * * *'
   startingDeadlineSeconds: 10
-  concurrencyPolicy: Allow
-  successfulJobsHistoryLimit: 3
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
       template:
+        metadata:
+          labels:
+            run: gke-cron-job
         spec:
           restartPolicy: Never
           containers:
             - name: gke-cron-job-solution-2
-              image: docker.io/....
+              image: docker.io/novaline/gke-cron-job-solution-2:1.5
               env:
                 - name: NODE_ENV
                   value: 'production'
                 - name: EMAIL_TO
                   value: 'novaline.dulin@gmail.com'
+                - name: K8S_POD_NAME
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.name
+                - name: SLEEP
+                  value: '65000'
               ports:
                 - containerPort: 8080
                   protocol: TCP

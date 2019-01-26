@@ -1,0 +1,13 @@
+{
+  "name": "gke-cron-job-solution-2",
+  "version": "1.0.3",
+  "description": "gke cron job solution 2 - GKE cron job",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./src/index.js"
+  },
+  "keywords": [],
+  "author": "mrdulin <novaline.dulin@gmail.com>",
+  "license": "MIT"
+}
