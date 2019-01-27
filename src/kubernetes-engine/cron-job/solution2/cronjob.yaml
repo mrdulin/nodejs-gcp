@@ -1,0 +1,26 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: gke-cron-job
+spec:
+  schedule: '*/1 * * * *'
+  startingDeadlineSeconds: 10
+  concurrencyPolicy: Allow
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: gke-cron-job-solution-2
+              image: docker.io/....
+              env:
+                - name: NODE_ENV
+                  value: 'production'
+                - name: EMAIL_TO
+                  value: 'novaline.dulin@gmail.com'
+              ports:
+                - containerPort: 8080
+                  protocol: TCP
