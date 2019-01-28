@@ -52,6 +52,7 @@ async function createSubscription(topicName, subscriptionName) {
 const parseMessage = (data) => JSON.parse(Buffer.from(data, 'base64').toString());
 
 async function initPubsub() {
+  console.log('Initialize cloud pub/sub');
   const { topicName, subscriptionName } = constants;
   await createTopic.call(pubsubClient, topicName);
   await createSubscription.call(pubsubClient, topicName, subscriptionName);

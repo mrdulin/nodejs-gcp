@@ -1,0 +1,13 @@
+apiVersion: v1
+data:
+  DAILY_REPORT_SCHEDULE: "'*/1 * * * *'"
+  EMAIL_TO: novaline.dulin@gmail.com
+  NODE_ENV: production
+kind: ConfigMap
+metadata:
+  creationTimestamp: 2019-01-28T03:15:03Z
+  name: env
+  namespace: default
+  resourceVersion: '1522'
+  selfLink: /api/v1/namespaces/default/configmaps/env
+  uid: e7457a27-22aa-11e9-8b72-42010a8a01ab

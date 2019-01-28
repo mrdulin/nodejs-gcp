@@ -4,14 +4,16 @@ const { createServer } = require('./server');
 const { listenDailyReportMessage } = require('./dailyReport');
 const { initPubsub } = require('./pubsub');
 const config = require('./config');
-const credentials = require('./credentials');
 
 (async function createApp() {
-  if (cluster.isMaster) {
-    console.log('config: ', config);
-    console.log('credentials: ', credentials);
+  if (config.CLUSTER_MODE === 'true') {
+    if (cluster.isMaster) {
+      await initPubsub();
+    }
+  } else {
     await initPubsub();
   }
+
   listenDailyReportMessage();
   createServer();
 })();

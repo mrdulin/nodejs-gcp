@@ -1,7 +1,7 @@
 node_modules/
 .gcp
 .DS_Store
-.env.yaml
+.env.*
+.env
 dist/
 build/
-.env
