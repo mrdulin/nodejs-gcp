@@ -19,3 +19,4 @@
 - https://cloud.google.com/kubernetes-engine/docs/tutorials/hello-app#step_8_deploy_a_new_version_of_your_app
 - https://cloud.google.com/kubernetes-engine/docs/quickstart?hl=zh-cn
 - https://www.npmjs.com/package/@google-cloud/debug-agent
+- https://cloud.google.com/icons/
