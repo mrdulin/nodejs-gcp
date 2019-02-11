@@ -1,0 +1,43 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: daily-report
+spec:
+  schedule: '*/1 * * * *'
+  startingDeadlineSeconds: 10
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            run: daily-report
+        spec:
+          volumes:
+            - name: google-application-credentials-volume
+              secret:
+                secretName: google-application-credentials
+                items:
+                  - key: application-credentials.json
+                    path: application-credentials.json
+          restartPolicy: Never
+          containers:
+            - name: daily-report
+              image: asia.gcr.io/shadowsocks-218808/daily-report:1.4
+              volumeMounts:
+                - name: google-application-credentials-volume
+                  mountPath: /etc/gcp
+                  readOnly: true
+              env:
+                - name: NODE_ENV
+                  value: 'production'
+                - name: EMAIL_TO
+                  value: 'novaline.dulin@gmail.com'
+                - name: KEY_FILE_NAME
+                  value: /etc/gcp/application-credentials.json
+                - name: K8S_POD_NAME
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.name
