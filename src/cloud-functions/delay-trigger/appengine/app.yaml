@@ -1,0 +1,4 @@
+runtime: nodejs8
+service: delay-trigger
+env_variables:
+  CREATE_USER_SCHEDULER: 30

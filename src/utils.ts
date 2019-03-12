@@ -53,7 +53,7 @@ function genBufferMessage(message: object | string): Buffer {
   } else if (_.isPlainObject(message)) {
     jsonString = JSON.stringify(message);
   } else {
-    throw new Error('Wrong data type');
+    throw new TypeError('Wrong message data type');
   }
   logger.info(`Random data: ${jsonString}`);
   const dataBuffer = Buffer.from(jsonString);

@@ -12,7 +12,7 @@ async function createQueue(project = '', queue = '', location = '', service = ''
         }
       },
       rateLimits: {
-        maxDispatchesPerSecond: 1,
+        maxDispatchesPerSecond: 2 / 60,
         maxConcurrentDispatches: 1
       }
     }

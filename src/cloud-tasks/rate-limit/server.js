@@ -18,8 +18,7 @@ app.get('/', (req, res) => {
 app.post('/createUser', async (req, res) => {
   console.log('Received task with payload: %s', req.body);
 
-  // 任务依旧会同时执行
-  await sleep(3000);
+  // await sleep(3000);
   res.send(`Printed task payload: ${req.body}`).end();
 });
 
