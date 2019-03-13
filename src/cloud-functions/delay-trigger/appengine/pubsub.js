@@ -52,7 +52,6 @@ function publish(topicName, message, attributes) {
     })
     .catch((error) => {
       console.error('Publish message failed.');
-      console.error(error);
       return Promise.reject(error);
     });
 }
@@ -61,7 +60,7 @@ function genBufferMessage(message) {
   let jsonString;
   if (typeof message === 'string') {
     jsonString = message;
-  } else if (_.isPlainObject(message)) {
+  } else if (Object.prototype.toString.call(message) === '[object Object]') {
     jsonString = JSON.stringify(message);
   } else {
     throw new TypeError('Wrong data type');
@@ -87,7 +86,7 @@ function pull(subName, maxMessages) {
       const response = responses[0];
       let messages = [];
       if (response.receivedMessages) {
-        console.log('receivedMessages: ', response.receivedMessages);
+        // console.log('receivedMessages: ', response.receivedMessages);
         messages = response.receivedMessages.map(({ ackId, message }) => {
           const dataBase64 = message.data ? message.data : message;
           const dataString = Buffer.from(dataBase64, 'base64').toString();

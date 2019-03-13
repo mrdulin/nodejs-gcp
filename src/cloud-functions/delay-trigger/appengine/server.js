@@ -11,8 +11,8 @@ app.get('/', (req, res) => {
   res.send(`version:${package.version}`);
 });
 
-app.get('/tasks/create-user', (req, res) => {
-  userService.createUser();
+app.get('/tasks/create-user', async (req, res) => {
+  await userService.createUser();
   res.sendStatus(200);
 });
 

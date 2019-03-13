@@ -1,10 +1,11 @@
 {
   "name": "appengine",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./server.js",
     "deploy": "gcloud app deploy",
     "deploy:cron": "gcloud app deploy ./cron.yaml"
   },
@@ -12,6 +13,7 @@
   "author": "mrdulin <novaline.dulin@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@google-cloud/pubsub": "^0.19.1",
     "express": "^4.16.4",
     "lodash": "^4.17.11"
   }
