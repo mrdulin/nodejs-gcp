@@ -1,0 +1,2 @@
+service: third-party-service
+runtime: nodejs8

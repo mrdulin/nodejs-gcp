@@ -1,5 +1,3 @@
-const _ = require('lodash');
-
 const pubsub = require('./pubsub');
 const { config } = require('./config');
 
@@ -62,8 +60,5 @@ function UserService() {
     createUserTimeSeries
   };
 }
-
-// const userSvc = new UserService();
-// userSvc.createUser();
 
 module.exports = UserService;

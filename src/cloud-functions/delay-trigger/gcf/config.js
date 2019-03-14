@@ -10,7 +10,9 @@ const config = {
       { topic: MESSAGE_PROCESS_TOPIC, sub: MESSAGE_PROCESS_SUBSCRIPTION },
       { topic: CREATE_USER_TOPIC, sub: CREATE_USER_SUBSCRIPTION }
     ]
-  }
+  },
+
+  PROJECT_ID: process.env.GCP_PROJECT
 };
 
-module.exports = { config };
+module.exports = { config, MESSAGE_PROCESS_TOPIC };

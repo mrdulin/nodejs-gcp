@@ -37,6 +37,12 @@ function createSubscription(topicName, subName) {
     .catch(console.log);
 }
 
+function fakePublish() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve('Message was published'), 1000);
+  });
+}
+
 function publish(topicName, message, attributes) {
   const buf = genBufferMessage(message);
 
@@ -67,4 +73,4 @@ function genBufferMessage(message) {
   return dataBuffer;
 }
 
-module.exports = { createTopic, createSubscription, pubsubClient, publish };
+module.exports = { createTopic, createSubscription, pubsubClient, publish, fakePublish };
