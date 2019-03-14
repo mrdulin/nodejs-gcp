@@ -16,7 +16,6 @@ app.get('/', (req, res) => {
 });
 
 app.get('/tasks/create-user', async (req, res) => {
-  // await userService.createUser();
   async.timesSeries(
     n,
     (_, next) => userService.createUserTimeSeries(next),

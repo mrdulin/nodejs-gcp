@@ -12,9 +12,7 @@ const createUserLimiter = new rateLimit({
   message: 'Too many users created from this IP, please try again after 30 seconds'
 });
 
-const memoryDB = {
-  users: []
-};
+const memoryDB = { users: [] };
 
 async function createServer() {
   const app = express();

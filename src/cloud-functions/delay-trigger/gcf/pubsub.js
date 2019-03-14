@@ -28,8 +28,7 @@ function genBufferMessage(message) {
   } else {
     throw new TypeError('Wrong data type');
   }
-  const dataBuffer = Buffer.from(jsonString);
-  return dataBuffer;
+  return Buffer.from(jsonString);
 }
 
 module.exports = { pubsubClient, publish };
