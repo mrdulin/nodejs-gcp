@@ -1,5 +1,5 @@
 cron:
-  - description: 'create user scheduler'
-    url: /tasks/create-user
-    schedule: every 1 mins
-    target: delay-trigger
+#   - description: 'create user scheduler'
+#     url: /tasks/create-user
+#     schedule: every 1 mins
+#     target: delay-trigger
