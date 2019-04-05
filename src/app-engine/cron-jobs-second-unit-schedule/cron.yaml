@@ -1,0 +1,5 @@
+cron:
+  - description: 'sync job'
+    url: /cronjob/sync
+    schedule: every 1 mins
+    target: cronjob-sec-unit
