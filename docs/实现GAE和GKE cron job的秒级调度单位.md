@@ -223,9 +223,200 @@ app.listen(PORT, () => {
 
 #### GKE cron job
 
-同理，
+同理，我们也可以在`GKE`的定时作业上实现秒级调度单位。
+
+`src/index.js`:
+
+```js
+const async = require('async');
+
+const OUTER_SCHEDULE = 60;
+const INNER_SCHEDULE = 10;
+
+async function main() {
+  try {
+    await updateDBTimeSeries();
+    console.log('A round update database operations done.');
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function updateDB() {
+  return new Promise((resolve) => {
+    process.nextTick(() => {
+      console.log('Update database success.');
+      resolve();
+    });
+  });
+}
+
+async function updateDBEveryTenSeconds(item, n, next) {
+  await updateDB();
+  if (item < n - 1) {
+    await sleep(INNER_SCHEDULE * 1000);
+  }
+  next();
+}
+
+async function updateDBTimeSeries() {
+  const n = OUTER_SCHEDULE / INNER_SCHEDULE;
+  return new Promise((resolve, reject) => {
+    async.timesSeries(
+      n,
+      (item, next) => updateDBEveryTenSeconds(item, n, next),
+      (error, results) => {
+        if (error) {
+          return reject(error);
+        }
+        resolve(results);
+      }
+    );
+  });
+}
+
+main();
+
+```
+
+示例代码和`GAE`例子的代码差不多，去掉了`express`启动的`HTTP` server的代码。
+
+`k8s/cronjobs/update-db.yaml`:
+
+```yam
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: update-db
+spec:
+  schedule: '*/1 * * * *'
+  startingDeadlineSeconds: 10
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            run: update-db
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: cron-job-second-unit-schedule
+              image: asia.gcr.io/shadowsocks-218808/cron-job-second-unit-schedule:1.1
+              env:
+                - name: NODE_ENV
+                  value: 'production'
+                - name: K8S_POD_NAME
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.name
+              ports:
+                - containerPort: 8080
+                  protocol: TCP
+
+```
+
+设置`schedule`为`*/1 * * * *`，表示每分钟执行一次作业，具体执行什么作业？执行容器`CMD`指令指定的启动脚本，即`npm start`，即`node ./src/index.js`。
+
+`Dockerfile`:
+
+```dockerfile
+FROM node:8.9-alpine
+
+WORKDIR /app
+COPY ./ /app/
+
+RUN apk update \
+  && apk add curl --no-cache \
+  && npm i -g npm@latest \
+  && npm i --production
+
+CMD [ "npm", "start" ]
+```
+
+`package.json`:
+
+```json
+"scripts": {
+    "start": "node ./src/index.js"
+},
+```
+
+下面关于打包`docker` `image`，还有`GKE`的使用和`k8s cron job`的部署简单说下。
+
+打包`docker` `image`:
+
+```bash
+docker build -t cron-job-second-unit-schedule:1.1 .
+```
+
+设置`docker ` `tag`
+
+```bash
+docker tag cron-job-second-unit-schedule:1.1 asia.gcr.io/shadowsocks-218808/cron-job-second-unit-schedule:1.1
+```
+
+`push`该`docker` `image`到`GCR` registry:
+
+```bash
+docker push asia.gcr.io/shadowsocks-218808/cron-job-second-unit-schedule:1.1
+The push refers to repository [asia.gcr.io/shadowsocks-218808/cron-job-second-unit-schedule]
+2a9069409556: Pushed
+4a18dd75bba0: Pushed
+fbe45ea1c2a6: Layer already exists
+f846841ed47f: Layer already exists
+0198944a9875: Layer already exists
+9dfa40a0da3b: Layer already exists
+1.1: digest: sha256:81e4b2b5ddda93781bf368372d8697cad5619ca7ffa763cdd1eb0a49893622d1 size: 1577
+```
 
 
+
+使用`gcloud`命令行工具创建`kubernetes cluster`:
+
+```bash
+☁  cron-job-second-unit-schedule [master] ⚡  gcloud container clusters create nodejs-gcp --num-nodes=3
+
+Creating cluster nodejs-gcp in us-west1-a... Cluster is being health-checked (master is healthy)...done.
+Created [https://container.googleapis.com/v1/projects/shadowsocks-218808/zones/us-west1-a/clusters/nodejs-gcp].
+To inspect the contents of your cluster, go to: https://console.cloud.google.com/kubernetes/workload_/gcloud/us-west1-a/nodejs-gcp?project=shadowsocks-218808
+kubeconfig entry generated for nodejs-gcp.
+NAME        LOCATION    MASTER_VERSION  MASTER_IP      MACHINE_TYPE   NODE_VERSION   NUM_NODES  STATUS
+nodejs-gcp  us-west1-a  1.11.7-gke.12   35.199.144.38  n1-standard-1  1.11.7-gke.12  3          RUNNING
+```
+
+为`kubectl`命令设置默认集群，将`kubectl`的`context`设置为新创建的这个`cluster`
+
+```bash
+☁  cron-job-second-unit-schedule [master] ⚡  gcloud container clusters get-credentials nodejs-gcp
+Fetching cluster endpoint and auth data.
+kubeconfig entry generated for nodejs-gcp.
+```
+
+部署`k8s` cron job:
+
+```bash
+☁  cron-job-second-unit-schedule [master] ⚡  kaf ./k8s/cronjobs/update-db.yaml
+cronjob.batch "update-db" created
+```
+
+部署完成后，去`GCP`控制台查看：
+
+![image](https://user-images.githubusercontent.com/17866683/55727226-1fd77280-5a44-11e9-8bf5-16f480dc9205.png)
+
+查看`update-db`定时作业的`container logs`:
+
+![image](https://user-images.githubusercontent.com/17866683/55727288-3f6e9b00-5a44-11e9-9cd0-759a4e6d56f7.png)
+
+![image](https://user-images.githubusercontent.com/17866683/55726041-7e4f2180-5a41-11e9-91c9-0297bd8c2550.png)
+
+可以看到该定时作业每10秒执行一次。
 
 
 

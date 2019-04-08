@@ -1,0 +1,31 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: update-db
+spec:
+  schedule: '*/1 * * * *'
+  startingDeadlineSeconds: 10
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            run: update-db
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: cron-job-second-unit-schedule
+              image: asia.gcr.io/shadowsocks-218808/cron-job-second-unit-schedule:1.1
+              env:
+                - name: NODE_ENV
+                  value: 'production'
+                - name: K8S_POD_NAME
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.name
+              ports:
+                - containerPort: 8080
+                  protocol: TCP
