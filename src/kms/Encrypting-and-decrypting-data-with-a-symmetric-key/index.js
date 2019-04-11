@@ -48,4 +48,37 @@ async function encrypt(options) {
   }
 }
 
-module.exports = { encrypt };
+async function decrypt(options) {
+  const { ciphertextFileName, plaintextFileName, locationId, keyRingId, cryptoKeyId } = options;
+  const readFile = util.promisify(fs.readFile);
+  let contentsBuffer;
+  try {
+    contentsBuffer = await readFile(ciphertextFileName);
+  } catch (error) {
+    console.error(error);
+    throw new Error('read ciphertextFileName failed.');
+  }
+
+  const ciphertext = contentsBuffer.toString('base64');
+  const name = client.cryptoKeyPath(process.env.PROJECT_ID, locationId, keyRingId, cryptoKeyId);
+
+  let result;
+  try {
+    const response = await client.decrypt({ name, ciphertext });
+    result = response[0];
+  } catch (error) {
+    console.error(error);
+    throw new Error('decrypt failed.');
+  }
+
+  const writeFile = util.promisify(fs.writeFile);
+  try {
+    await writeFile(plaintextFileName, Buffer.from(result.plaintext, 'base64'));
+    console.log(`Result saved to ${plaintextFileName} successfully.`);
+  } catch (error) {
+    console.error(error);
+    throw new Error(`Result saved to ${plaintextFileName} failed.`);
+  }
+}
+
+module.exports = { encrypt, decrypt };
