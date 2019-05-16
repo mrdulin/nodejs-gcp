@@ -1,7 +1,12 @@
 const faker = require('faker');
 
 const { user } = require('../data');
-const { logger } = require('../logger');
+// const { logger } = require('../logger');
+const { createLogger } = require('dl-toolkits');
+const logger = createLogger();
+
+logger.debug(`process.env.NODE_ENV: ${process.env.NODE_ENV}`);
+logger.debug(`process.env.DEVELOPMENT_BUILD: ${process.env.DEVELOPMENT_BUILD}`);
 
 const UserDAO = {
   async findById(id) {
@@ -46,30 +51,42 @@ exports.winstonLogging = async (req, res) => {
   //   labels: ['log 6', 'better logging', 'winston']
   // });
 
+  logger.debug(user, {
+    context: 'UserService.findById',
+    arguments: {
+      id: faker.random.uuid(),
+      extra: {
+        campaignId: faker.random.uuid(),
+        location: { id: faker.random.uuid(), latitude: faker.address.latitude(), longitude: faker.address.longitude() }
+      }
+    },
+    labels: ['log 7', 'better logging', 'winston', 'debug']
+  });
+
   const userId = faker.random.uuid();
   try {
     await UserService.findById(userId);
     logger.info('find user by id success');
     res.sendStatus(200);
   } catch (error) {
-    logger.log({
-      level: 'error',
-      message: error.stack,
-      // stack: error.stack,
-      context: 'UserService.findById',
-      arguments: {
-        id: faker.random.uuid(),
-        extra: {
-          campaignId: faker.random.uuid(),
-          location: {
-            id: faker.random.uuid(),
-            latitude: faker.address.latitude(),
-            longitude: faker.address.longitude()
-          }
-        }
-      },
-      labels: ['error', 'better logging', 'error stack', 'way 1']
-    });
+    // logger.log({
+    //   level: 'error',
+    //   message: error.stack,
+    //   // stack: error.stack,
+    //   context: 'UserService.findById',
+    //   arguments: {
+    //     id: faker.random.uuid(),
+    //     extra: {
+    //       campaignId: faker.random.uuid(),
+    //       location: {
+    //         id: faker.random.uuid(),
+    //         latitude: faker.address.latitude(),
+    //         longitude: faker.address.longitude()
+    //       }
+    //     }
+    //   },
+    //   labels: ['error', 'better logging', 'error stack', 'way 1']
+    // });
 
     logger.error(error.stack, {
       // stack: error.stack,

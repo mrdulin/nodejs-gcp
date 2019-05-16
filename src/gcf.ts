@@ -1,6 +1,43 @@
 import cp from 'child_process';
 
-import { IPubsubEvent, IMessage, IValidMessage } from './@types';
+export type Callback = (err?: Error | undefined | null, result?: any) => void;
+export interface IAnyObject {
+  [key: string]: any;
+}
+
+export interface IRetryMessage {
+  retryTimes?: number;
+}
+
+export interface IMessage<Body> extends IRetryMessage, IAnyObject {
+  type?: string;
+  body?: Body;
+}
+
+export interface IValidMessage<Body> extends Required<IMessage<Body>> {}
+
+export interface IMessageWithCampaignId<Body> extends IMessage<Body> {
+  campaignId?: string;
+  agencyCampaignId?: string;
+}
+
+export interface IDeadLetterMessage {
+  uri: string;
+  error: Error;
+}
+
+export interface IPubsubEvent {
+  data: {
+    data: string;
+  };
+}
+
+export interface IContext {
+  eventId: string;
+  timestamp: string;
+  eventType: string;
+  resource: string;
+}
 
 interface ICloudFunctionServiceOpts {
   funcName: string;

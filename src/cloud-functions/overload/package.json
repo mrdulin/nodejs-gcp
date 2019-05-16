@@ -1,0 +1,20 @@
+{
+  "name": "overload",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "predeploy": "npm run build",
+    "deploy:runtime6": "gcloud functions deploy overloadRuntime --trigger-event=google.pubsub.topic.publish --trigger-resource=overload --runtime=nodejs6 --memory=128 --timeout=10",
+    "deploy:runtime8": "gcloud functions deploy overloadRuntime --trigger-event=google.pubsub.topic.publish --trigger-resource=overload --runtime=nodejs8 --memory=128 --timeout=10"
+  },
+  "keywords": [],
+  "author": "mrdulin <novaline.dulin@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "tslint": "^5.16.0",
+    "typescript": "^3.4.5"
+  }
+}
