@@ -1,8 +1,8 @@
 import Compute from '@google-cloud/compute';
 
 const compute = new Compute({
-  keyFilename: '/Users/elsa/workspace/github.com/mrdulin/nodejs-gcp/.gcp/gce-editor.json',
-  projectId: 'shadowsocks-218808'
+  keyFilename: process.env.CREDENTIALS,
+  projectId: process.env.PROJECT_ID
 });
 
 async function getVms() {
