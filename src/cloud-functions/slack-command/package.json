@@ -1,0 +1,19 @@
+{
+  "name": "slack-command",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "gcloud functions deploy operateVM --trigger-http --memory=128 --runtime=nodejs8",
+    "dev": "node index.spec.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/compute": "^0.12.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4"
+  }
+}
