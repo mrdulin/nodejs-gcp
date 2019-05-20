@@ -1,5 +1,4 @@
 import { IContext, IPubsubEvent, Callback } from '../../gcf';
-import { GlobalPartial } from 'lodash/common/common';
 
 // async function overloadRuntimeAdapter(event: IPubsubEvent, context: IContext, callback: Callback) {
 //   overloadRuntime(event, callback);
