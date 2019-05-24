@@ -1,6 +1,8 @@
+// const { operateVM } = require('./');
+
 const express = require('express');
 const bodyParser = require('body-parser');
-const { operateVM } = require('./');
+const { operateVM } = require('./demo');
 
 const app = express();
 const PORT = '3001';
