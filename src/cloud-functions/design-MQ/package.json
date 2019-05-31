@@ -1,0 +1,15 @@
+{
+  "name": "design-MQ",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "../../../node_modules/.bin/ts-node ./producer",
+    "deploy:updateCampaign": "gcloud beta functions deploy updateCampaign --trigger-resource design-mq --trigger-event google.pubsub.topic.publish --memory=128MB --runtime=nodejs8",
+    "deploy:createCampaign": "gcloud beta functions deploy createCampaign --trigger-resource design-mq --trigger-event google.pubsub.topic.publish --memory=128MB --runtime=nodejs8",
+    "deploy": "npm run deploy:updateCampaign & npm run deploy:createCampaign"
+  },
+  "keywords": [],
+  "author": "mrdulin <novaline.dulin@gmail.com>",
+  "license": "MIT"
+}
