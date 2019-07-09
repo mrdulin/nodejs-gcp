@@ -4,10 +4,12 @@ import { upload, storage } from '../../gcs';
 import { config } from './config';
 import { generateEncryptionKey, logger } from '../../utils';
 import faker from 'faker';
+import fs from 'fs';
 
 describe('#upload', () => {
   const keyFilename = path.resolve(__dirname, '../../../.gcp/cloud-storage-admin.json');
-  const fileName = 'mmczblsq.doc';
+  // const fileName = 'mmczblsq.doc';
+  const fileName = '1547012340909WX20190108-124331.png';
   const filePath = path.resolve(__dirname, `../../../tmp/${fileName}`);
 
   it.skip('should upload file correctly', async () => {
@@ -19,11 +21,13 @@ describe('#upload', () => {
     });
   });
 
-  it('should upload file correctly', async () => {
+  // https://nodejs.org/api/stream.html#stream_writable_end_chunk_encoding_callback
+  it.skip('should upload file correctly with buffer content', async () => {
     const myStorage = new Storage({ keyFilename });
     const bucket: Bucket = myStorage.bucket('ez2on');
-    const file = bucket.file(fileName);
-    await file.save(filePath, { resumable: false });
+    const file = bucket.file(Date.now() + fileName);
+    const fileContent = fs.readFileSync(filePath);
+    await file.save(fileContent, { resumable: false });
     await file.makePublic();
     logger.debug('file upload success');
   });
