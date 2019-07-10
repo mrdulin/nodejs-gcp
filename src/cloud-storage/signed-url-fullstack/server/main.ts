@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { Storage, File, Bucket, GetSignedUrlResponse } from '@google-cloud/storage';
 import path from 'path';
 import { logger } from '../../../utils';
+import { ActionToHTTPMethod } from '@google-cloud/storage/build/src/file';
 
 dotenv.config();
 
@@ -22,8 +23,15 @@ function main() {
       return;
     }
     const filename: string = req.query.filename;
+    const action: 'read' | 'write' | 'delete' | 'resumable' = req.query.action;
     if (!filename) {
       logger.error('Require filename');
+      res.sendStatus(400);
+      return;
+    }
+    const allowActions = ['write', 'read', 'delete', 'resumable'];
+    if (!allowActions.includes(action)) {
+      logger.error(`action ${action} is not allowed`);
       res.sendStatus(400);
       return;
     }
@@ -34,7 +42,7 @@ function main() {
 
     try {
       const getSignedUrlResponse: GetSignedUrlResponse = await file.getSignedUrl({
-        action: 'write',
+        action,
         expires: Date.now() + 60 * 1000,
         version: 'v4'
       });

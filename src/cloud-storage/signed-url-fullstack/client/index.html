@@ -12,15 +12,21 @@
       <input type="file" accept="image/*" name="file" id="upload-input" />
       <button type="submit">Upload</button>
     </form>
+    <div id="img-box"></div>
     <script>
       (function() {
         window.onload = onload;
 
+        const actionEnum = {
+          write: 'write',
+          read: 'read'
+        };
+
         const API = {
           backendURL: 'http://localhost:3000',
-          getSignedUrl(filename) {
+          getSignedUrl(filename, action) {
             const url = new URL(`${API.backendURL}/signed-url`);
-            const params = { filename };
+            const params = { filename, action };
             url.search = new URLSearchParams(params);
             return fetch(url).then((res) => res.json());
           },
@@ -67,19 +73,31 @@
             if (files.length) {
               const file = files[0];
               console.log(file);
-              API.getSignedUrl(file.name)
+              API.getSignedUrl(file.name, actionEnum.write)
                 .then((getSignedUrlResponse) => {
                   console.log('getSignedUrlResponse: ', getSignedUrlResponse);
                   return getSignedUrlResponse.signedUrl;
                 })
                 .then((signedUrl) => {
-                  return API.upload(signedUrl, file);
+                  return API.upload(signedUrl, file)
+                    .then(() => API.getSignedUrl(file.name, actionEnum.read))
+                    .then((getSignedUrlResponse) => getSignedUrlResponse.signedUrl);
+                })
+                .then((signedUrl) => {
+                  renderImage(signedUrl);
                 })
                 .catch((err) => {
                   console.log(err);
                 });
             }
           }
+        }
+
+        function renderImage(url) {
+          const img = document.createElement('img');
+          const imgBoxElement = document.getElementById('img-box');
+          img.src = url;
+          imgBoxElement.appendChild(img);
         }
       })();
     </script>
