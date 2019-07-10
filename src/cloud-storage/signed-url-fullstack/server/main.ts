@@ -3,9 +3,12 @@ import dotenv from 'dotenv';
 import { Storage, File, Bucket, GetSignedUrlResponse } from '@google-cloud/storage';
 import path from 'path';
 import { logger } from '../../../utils';
-import { ActionToHTTPMethod } from '@google-cloud/storage/build/src/file';
+import faker from 'faker';
 
 dotenv.config();
+
+const mockUserId = faker.random.uuid();
+const mockCampaignId = faker.random.uuid();
 
 function main() {
   const app: Application = express();
@@ -35,10 +38,13 @@ function main() {
       res.sendStatus(400);
       return;
     }
-    console.log('filename: ', filename);
+
     const storage: Storage = new Storage({ keyFilename: process.env.KEY_FILE_PATH });
     const bucket: Bucket = storage.bucket(bucketName);
-    const file: File = bucket.file(filename);
+    const objectName = `${mockUserId}/${mockCampaignId}/${filename}`;
+    console.log('filename: ', filename);
+    console.log('objectName: ', objectName);
+    const file: File = bucket.file(objectName);
 
     try {
       const getSignedUrlResponse: GetSignedUrlResponse = await file.getSignedUrl({
