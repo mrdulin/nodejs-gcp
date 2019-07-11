@@ -27,9 +27,6 @@
           upload(signedUrl, file) {
             return fetch(signedUrl, {
               method: 'PUT',
-              headers: {
-                'Access-Control-Request-Method': 'PUT'
-              },
               body: file
             }).then((res) => {
               console.log('upload success');
