@@ -9,7 +9,7 @@
   <body>
     <h1>Upload to cloud storage using signed url</h1>
     <form id="upload-form">
-      <input type="file" accept="image/*" name="file" id="upload-input" />
+      <input type="file" accept="image/*, video/mp4" name="file" id="upload-input" multiple />
       <button type="submit">Upload</button>
     </form>
     <div id="img-box"></div>
@@ -71,26 +71,56 @@
             const fileInputElement = document.getElementById('upload-input');
             const files = fileInputElement.files;
             if (files.length) {
-              const file = files[0];
-              console.log(file);
-              API.getSignedUrl(file.name, actionEnum.write)
-                .then((getSignedUrlResponse) => {
-                  console.log('getSignedUrlResponse: ', getSignedUrlResponse);
-                  return getSignedUrlResponse.signedUrl;
-                })
-                .then((signedUrl) => {
-                  return API.upload(signedUrl, file)
-                    .then(() => API.getSignedUrl(file.name, actionEnum.read))
-                    .then((getSignedUrlResponse) => getSignedUrlResponse.signedUrl);
-                })
-                .then((signedUrl) => {
-                  renderImage(signedUrl);
-                })
-                .catch((err) => {
-                  console.log(err);
+              if (files.length === 1) {
+                const file = files[0];
+                console.log(file);
+                upload(file)
+                  .then((signedUrl) => {
+                    renderImage(signedUrl);
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              } else {
+                console.log('files: ', files);
+                const fileArray = Array.from(files);
+                const uploadTasks = fileArray.map((file) => {
+                  return upload(file).catch((err) => {
+                    return { file, err };
+                  });
                 });
+                Promise.all(uploadTasks).then((uploadResponses) => {
+                  console.log('uploadResponses: ', uploadResponses);
+                  const successUploadResponses = [];
+                  const failedUploadResponses = [];
+                  for (const uploadResponse of uploadResponses) {
+                    if (uploadResponse.err) {
+                      failedUploadResponses.push(uploadResponse);
+                    } else {
+                      successUploadResponses.push(uploadResponse);
+                    }
+                  }
+                  successUploadResponses.forEach((successUploadResponse) => {
+                    const url = successUploadResponse;
+                    renderImage(url);
+                  });
+                });
+              }
             }
           }
+        }
+
+        function upload(file) {
+          return API.getSignedUrl(file.name, actionEnum.write)
+            .then((getSignedUrlResponse) => {
+              console.log('getSignedUrlResponse: ', getSignedUrlResponse);
+              return getSignedUrlResponse.signedUrl;
+            })
+            .then((signedUrl) => {
+              return API.upload(signedUrl, file)
+                .then(() => API.getSignedUrl(file.name, actionEnum.read))
+                .then((getSignedUrlResponse) => getSignedUrlResponse.signedUrl);
+            });
         }
 
         function renderImage(url) {
