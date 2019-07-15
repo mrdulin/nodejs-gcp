@@ -9,6 +9,7 @@ dotenv.config();
 
 const mockUserId = faker.random.uuid();
 const mockCampaignId = faker.random.uuid();
+const tmpDir = '/tmp';
 
 function main() {
   const app: Application = express();
@@ -41,7 +42,7 @@ function main() {
 
     const storage: Storage = new Storage({ keyFilename: process.env.KEY_FILE_PATH });
     const bucket: Bucket = storage.bucket(bucketName);
-    const objectName = `${mockUserId}/${mockCampaignId}/${filename}`;
+    const objectName = `${tmpDir}/${mockUserId}/${mockCampaignId}/${filename}`;
     console.log('filename: ', filename);
     console.log('objectName: ', objectName);
     const file: File = bucket.file(objectName);
