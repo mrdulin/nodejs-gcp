@@ -14,6 +14,7 @@ const tmpDir = '/tmp';
 function main() {
   const app: Application = express();
   const port: number = 3000;
+  const storage: Storage = new Storage({ keyFilename: process.env.KEY_FILE_PATH });
 
   app.get('/', (req: Request, res: Response) => {
     res.sendFile(path.resolve(__dirname, '../client/index.html'));
@@ -40,7 +41,6 @@ function main() {
       return;
     }
 
-    const storage: Storage = new Storage({ keyFilename: process.env.KEY_FILE_PATH });
     const bucket: Bucket = storage.bucket(bucketName);
     const objectName = `${tmpDir}/${mockUserId}/${mockCampaignId}/${filename}`;
     console.log('filename: ', filename);
@@ -59,6 +59,22 @@ function main() {
       logger.error('get signed url error', { arguments: { error } });
       res.sendStatus(500);
     }
+  });
+
+  app.get('/:bucketName/:uid/:filename', async (req: Request, res: Response) => {
+    const { bucketName, filename, uid } = req.params;
+    const bucket: Bucket = storage.bucket('ez2on');
+    const objectName =
+      'b98dad5f-49df-4600-ac1b-c4f651fe2f9e/262bf2ec-2fab-4a3d-835a-87b621128ffa/graphql-n-plus-1-query.png';
+    const file = bucket.file(objectName);
+    const getSignedUrlResponse: GetSignedUrlResponse = await file.getSignedUrl({
+      action: 'read',
+      expires: Date.now() + 60 * 1000,
+      version: 'v4'
+    });
+    const signedUrl: string = getSignedUrlResponse[0];
+    console.log('signedUrl: ', signedUrl);
+    res.redirect(signedUrl);
   });
 
   app.listen(port, () => {

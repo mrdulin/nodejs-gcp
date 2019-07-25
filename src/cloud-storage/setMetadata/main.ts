@@ -22,10 +22,10 @@ async function main() {
   const filePath = path.resolve(__dirname, `../../../tmp/${objectName}`);
 
   const uploadResponse: UploadResponse = await bucket.upload(filePath, {
-    gzip: true
-    // metadata: {
-    // cacheControl: 'public, max-age=10'
-    // }
+    gzip: true,
+    metadata: {
+      cacheControl: 'public,max-age=1800'
+    }
   });
   const [_, metadata] = uploadResponse;
   logger.debug('metadata', { arguments: { metadata } });
