@@ -1,0 +1,16 @@
+{
+  "name": "04-cloud-function-pubsub-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "gcloud functions deploy TestCloudTracePubSubService --runtime nodejs8 --trigger-topic TestCloudTrace --env-vars-file .env.yaml"
+  },
+  "keywords": [],
+  "author": "mrdulin <novaline.dulin@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@google-cloud/trace-agent": "^4.1.0",
+    "node-fetch": "^2.6.0"
+  }
+}

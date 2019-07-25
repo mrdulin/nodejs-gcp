@@ -1,0 +1,27 @@
+{
+  "name": "work-with-knex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/main.js",
+  "scripts": {
+    "start": "node ./dist/main.js",
+    "prebuild": "npm run clean",
+    "build": "tsc",
+    "predev": "npm run build",
+    "dev": "npm start",
+    "clean": "rm -rf ./dist"
+  },
+  "keywords": [],
+  "author": "mrdulin <novaline.dulin@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "knex": "^0.15.2",
+    "pg": "^7.11.0"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^6.1.1",
+    "dotenv": "^8.0.0",
+    "typescript": "^3.5.3"
+  }
+}

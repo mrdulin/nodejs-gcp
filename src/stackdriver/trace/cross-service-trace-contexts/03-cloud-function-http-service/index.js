@@ -12,8 +12,13 @@ const app = express();
 const port = 3002;
 
 app.get('/', (req, res) => {
+  const span = tracer.createChildSpan({
+    name: `${serviceContext.service} child span`,
+    traceContext: req.headers['x-cloud-trace-context']
+  });
   console.log('req.headers: ', JSON.stringify(req.headers, null, 2));
   // "x-cloud-trace-context": "45ef98dbfa4342b0bd33580644752b4d/188499147648381;o=1"
+  span.endSpan();
   res.send(`${serviceContext.service} is ok. timestamp: ${Date.now()}.`);
 });
 

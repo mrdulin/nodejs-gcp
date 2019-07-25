@@ -1,10 +1,10 @@
 {
-  "name": "01-service",
+  "name": "03-cloud-function-http-service",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "gcloud functions deploy TestCloudTraceHttpService --runtime nodejs8 --trigger-http",
     "start": "node ./main.js"
   },
   "keywords": [],
