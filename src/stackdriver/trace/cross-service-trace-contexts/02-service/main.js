@@ -7,8 +7,7 @@ const tracer = require('@google-cloud/trace-agent').start({
 });
 
 const express = require('express');
-const request = require('request-promise');
-
+const fetch = require('node-fetch');
 const app = express();
 const port = 3001;
 
@@ -18,12 +17,9 @@ app.get('/', async (req, res) => {
     traceContext: req.headers['x-cloud-trace-context']
   });
   console.log('req.headers: ', JSON.stringify(req.headers, null, 2));
-  //"x-cloud-trace-context": "45ef98dbfa4342b0bd33580644752b4d/130211864562388;o=1",
-  const service3URL = 'http://localhost:3002';
-  const service3Resp = await request.get(service3URL);
-  console.log(`service3Resp: ${service3Resp}`);
+  const body = await fetch('https://api.itbook.store/1.0/search/mongodb').then((res) => res.json());
   span.endSpan();
-  res.send(`${serviceContext.service} is ok. timestamp: ${Date.now()}.`);
+  res.json(body);
 });
 
 app.listen(port, () => {

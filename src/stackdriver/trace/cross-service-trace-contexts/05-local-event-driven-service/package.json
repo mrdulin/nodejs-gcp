@@ -1,18 +1,17 @@
 {
-  "name": "01-service",
+  "name": "05-local-event-driven-service",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./main.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "mrdulin <novaline.dulin@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@google-cloud/trace-agent": "^4.0.1",
-    "express": "^4.17.1",
+    "@google-cloud/pubsub": "^0.30.1",
+    "@google-cloud/trace-agent": "^4.1.0",
     "node-fetch": "^2.6.0"
   }
 }
