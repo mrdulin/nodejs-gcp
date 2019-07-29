@@ -12,18 +12,18 @@ exports.GoogleAdwordsAPI = function GoogleAdwordsAPI(req, res) {
   console.log(`req.headers: ${JSON.stringify(req.headers, null, 2)}`);
   console.log('traceContext: ', JSON.stringify(traceContext, null, 2));
   const options = {
-    name: 'GoogleAdwordsAPI',
+    name: operation,
     method: req.method,
     url: req.originalUrl,
     traceContext
   };
   tracer.runInRootSpan(options, async (rootSpan) => {
-    const span = tracer.createChildSpan({ name: operation });
-    const spanTraceContext = span.getTraceContext();
-    console.log('spanTraceContext: ', spanTraceContext);
+    // const span = tracer.createChildSpan({ name: operation });
+    // const spanTraceContext = span.getTraceContext();
+    // console.log('spanTraceContext: ', spanTraceContext);
     const mockdata = await mockRepsonse();
     console.log('mockdata: ', mockdata);
-    span.endSpan();
+    // span.endSpan();
     rootSpan.endSpan();
     res.json(mockdata);
   });
