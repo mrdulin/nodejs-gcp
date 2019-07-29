@@ -25,6 +25,9 @@ function createCampaign() {
 
 app.post('/campaign', async (req, res) => {
   logger.debug('create campaign');
+  const rootSpan = tracer.getCurrentRootSpan();
+  const rootSpanTraceContext = rootSpan.getTraceContext();
+  logger.debug(`rootSpanTraceContext: ${JSON.stringify(rootSpanTraceContext)}`);
   const createCampaignSpan = tracer.createChildSpan({ name: 'create campaign' });
   await createCampaign();
   createCampaignSpan.endSpan();
@@ -35,7 +38,7 @@ app.post('/campaign', async (req, res) => {
   span.addLabel('traceContext', traceContext);
   logger.debug(`span.getTraceContext: ${traceContext}`);
 
-  const message = { traceContext };
+  const message = { traceContext: generateTraceContext(rootSpanTraceContext) };
   const messageBuf = Buffer.from(JSON.stringify(message));
   try {
     await pubsub.topic('createCampaign').publish(messageBuf);
