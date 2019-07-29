@@ -21,11 +21,12 @@ const port = 3000;
 app.get('/', async (req, res) => {
   // const responseTraceContext = tracer.getResponseTraceContext();
   // console.log('tracer.getResponseTraceContext: ', responseTraceContext);
-  const span = tracer.createChildSpan({ name: `${serviceContext.service} child span` });
   console.log('req.headers: ', JSON.stringify(req.headers, null, 2));
+
+  const span = tracer.createChildSpan({ name: `publish message child span` });
   const traceContext = span.getTraceContext();
-  console.log('span.getTraceContext: ', traceContext);
   span.addLabel('traceContext', traceContext);
+  console.log('span.getTraceContext: ', traceContext);
 
   const message = { traceContext };
   const messageBuf = Buffer.from(JSON.stringify(message));
