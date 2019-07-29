@@ -13,6 +13,8 @@ exports.GoogleAdwordsAPI = function GoogleAdwordsAPI(req, res) {
   console.log('traceContext: ', JSON.stringify(traceContext, null, 2));
   const options = {
     name: 'GoogleAdwordsAPI',
+    method: req.method,
+    url: req.originalUrl,
     traceContext
   };
   tracer.runInRootSpan(options, async (rootSpan) => {
