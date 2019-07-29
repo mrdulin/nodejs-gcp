@@ -1,0 +1,18 @@
+{
+  "name": "01-web-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "mrdulin <novaline.dulin@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@google-cloud/pubsub": "^0.30.1",
+    "@google-cloud/trace-agent": "^4.1.0",
+    "dl-toolkits": "^1.0.11",
+    "express": "^4.17.1"
+  }
+}

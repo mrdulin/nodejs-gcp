@@ -27,7 +27,6 @@
     "@google-cloud/kms": "^1.0.0",
     "@google-cloud/pubsub": "^0.30.1",
     "@google-cloud/storage": "^3.0.2",
-    "@google-cloud/trace-agent": "^3.6.1",
     "async": "^2.6.2",
     "cors": "^2.8.5",
     "dl-toolkits": "^1.0.9",
@@ -37,6 +36,7 @@
     "knex": "^0.15.2",
     "lodash": "^4.17.15",
     "lowdb": "^1.0.0",
+    "node-fetch": "^2.6.0",
     "pg": "^7.8.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.2"

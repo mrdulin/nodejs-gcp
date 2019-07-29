@@ -1,0 +1,16 @@
+{
+  "name": "05-create-ad",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "gcloud functions deploy createAd --runtime nodejs8 --trigger-topic adGroupCreated --env-vars-file .env.yaml"
+  },
+  "keywords": [],
+  "author": "mrdulin <novaline.dulin@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@google-cloud/trace-agent": "^4.1.0",
+    "node-fetch": "^2.6.0"
+  }
+}

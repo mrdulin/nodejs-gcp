@@ -1,0 +1,16 @@
+{
+  "name": "06-google-adwords-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "gcloud functions deploy GoogleAdwordsAPI --trigger-http --runtime nodejs8"
+  },
+  "keywords": [],
+  "author": "mrdulin <novaline.dulin@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@google-cloud/trace-agent": "^4.1.0",
+    "faker": "^4.1.0"
+  }
+}
