@@ -21,7 +21,7 @@ const subscriptionName = 'TestCloudTrace';
   const subscription = pubsub.topic(topicName).subscription(subscriptionName);
 
   subscription.on('message', async (message) => {
-    const span = tracer.createChildSpan({ name: serviceContext.service, traceContext: message.traceContext });
+    const span = tracer.createChildSpan({ name: serviceContext.service });
     const jsonString = Buffer.from(message.data, 'base64').toString();
     const data = JSON.parse(jsonString);
     console.log(`message.data: ${JSON.stringify(data, null, 2)}`);
