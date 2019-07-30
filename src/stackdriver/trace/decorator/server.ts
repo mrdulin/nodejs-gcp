@@ -1,9 +1,9 @@
 import express from 'express';
-import { logger } from '../../../utils';
 import { DiscoveryService } from './DiscoveryService';
 
 async function createServer() {
   const app = express();
+  const PORT = process.env.PORT || 3200;
 
   // This incoming HTTP request should be captured by Trace
   app.get('/', async (req, res) => {
@@ -14,15 +14,15 @@ async function createServer() {
         .status(200)
         .send(names)
         .end();
+      return;
     } catch (err) {
-      res.status(500).end();
+      res.sendStatus(500);
     }
   });
-  const PORT = process.env.PORT || 8080;
 
   return app.listen(PORT, () => {
-    logger.info(`App listening on port http://localhost:${PORT}`);
-    logger.info('Press Ctrl+C to quit.');
+    console.info(`App listening on port http://localhost:${PORT}`);
+    console.info('Press Ctrl+C to quit.');
   });
 }
 
