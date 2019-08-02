@@ -6,6 +6,7 @@ function trace(options?: { name: string }) {
     descriptor.value = async function(...args: any[]) {
       const spanName = (options ? options.name : '') || orignalFunction.name || propertyKey;
       const childSpan = tracer.createChildSpan({ name: spanName });
+      childSpan.addLabel('class', target.name);
       const rval = await orignalFunction.apply(this, args);
       childSpan.endSpan();
       return rval;
