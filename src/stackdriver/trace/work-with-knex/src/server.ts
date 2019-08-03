@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { Application } from 'express-serve-static-core';
-import { connection as knex } from './db';
+import { UserService } from './services';
 
 function createServer() {
   const app: Application = express();
@@ -9,8 +9,8 @@ function createServer() {
     res.sendStatus(200);
   });
   app.get('/users', async (req: Request, res: Response) => {
-    const query = `select * from users;`;
-    const users = await knex.raw(query).then((result) => result.rows);
+    const userService = new UserService();
+    const users = await userService.findAll();
     res.json({ users });
   });
   return app.listen(port, () => {
