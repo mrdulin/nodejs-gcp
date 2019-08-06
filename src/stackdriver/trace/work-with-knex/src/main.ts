@@ -14,7 +14,8 @@ import path from 'path';
     keyFilename: process.env.TRACE_AGENT_CREDENTIAL,
     samplingRate: 5,
     ignoreUrls: [/^\/ignore-me/],
-    ignoreMethods: ['options']
+    ignoreMethods: ['options'],
+    enhancedDatabaseReporting: true
   });
   const { createServer } = await import('./server');
   await createServer();

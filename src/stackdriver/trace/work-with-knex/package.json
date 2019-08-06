@@ -15,6 +15,7 @@
   "author": "mrdulin <novaline.dulin@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@google-cloud/trace-agent": "^4.1.1",
     "express": "^4.17.1",
     "knex": "^0.15.2",
     "pg": "^7.11.0"
