@@ -1,4 +1,4 @@
-const tracer = require('@google-cloud/trace-agent').start({
+tracer = require('@google-cloud/trace-agent').start({
   samplingRate: 0,
   bufferSize: 1,
   serviceContext: { service: 'TestCloudTracePubSubService' }
@@ -56,12 +56,21 @@ async function TestCloudTrace(data, context, callback) {
 exports.TestCloudTracePubSubService = traceEnhance(TestCloudTrace);
 
 function traceEnhance(cloudfunction) {
-  return function originalCloudFunction(data, context, callback) {
+  return async function originalCloudFunction(data, context, callback) {
     const pubSubMessage = data;
     const jsonString = pubSubMessage.data ? Buffer.from(pubSubMessage.data, 'base64').toString() : '{}';
     const message = JSON.parse(jsonString);
     console.log(`message: ${JSON.stringify(message, null, 2)}`);
-    // const traceContext = parseContextFromHeader(message.traceContext);
+
+    // can't generate rootSpan
+    // let tracer = require('@google-cloud/trace-agent').get();
+    // if (!tracer) {
+    //   tracer = require('@google-cloud/trace-agent').start({
+    //     samplingRate: 0,
+    //     bufferSize: 1,
+    //     serviceContext: { service: 'TestCloudTracePubSubService' }
+    //   });
+    // }
 
     tracer.runInRootSpan(
       {
@@ -69,17 +78,15 @@ function traceEnhance(cloudfunction) {
         traceContext: message.traceContext
       },
       (rootSpan) => {
-        // const span = tracer.createChildSpan({ name: 'Function execution' });
         rootSpan.addLabel('message', message);
         rootSpan.addLabel('context', context);
         rootSpan.addLabel('traceContext', message.traceContext);
         function wrappedCallback(...args) {
-          // span.endSpan();
           rootSpan.endSpan();
           console.log('trace root span end');
           callback.apply(this, args);
         }
-
+        cloudfunction = tracer.wrap(cloudfunction);
         cloudfunction.call(this, data, context, wrappedCallback);
       }
     );
