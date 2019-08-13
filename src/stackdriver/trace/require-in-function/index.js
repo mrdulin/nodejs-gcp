@@ -1,4 +1,5 @@
 const express = require('express');
+const fetch = require('node-fetch');
 const app = express();
 
 async function getEnvVars() {
@@ -7,8 +8,13 @@ async function getEnvVars() {
   };
 }
 
+async function asyncOperation() {
+  return new Promise((resolve) => setTimeout(resolve, 1000));
+}
+
 let tracer;
 app.get('/', async (req, res) => {
+  console.count('Test cloud trace initialize within a function');
   tracer = require('@google-cloud/trace-agent').get();
   if (!tracer) {
     const envVars = await getEnvVars();
@@ -18,7 +24,8 @@ app.get('/', async (req, res) => {
       keyFilename: envVars.keyFilename
     });
   }
-  console.log(`tracer: ${JSON.stringify(tracer)}`);
+  await fetch('https://api.itbook.store/1.0/search/mongodb').then((res) => res.json());
+  await asyncOperation();
 
   tracer.runInRootSpan(
     {

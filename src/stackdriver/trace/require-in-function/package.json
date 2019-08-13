@@ -10,6 +10,7 @@
   "author": "mrdulin <novaline.dulin@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@google-cloud/trace-agent": "^4.1.1"
+    "@google-cloud/trace-agent": "^4.1.1",
+    "node-fetch": "^2.6.0"
   }
 }
