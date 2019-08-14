@@ -12,11 +12,21 @@ async function asyncOperation() {
   return new Promise((resolve) => setTimeout(resolve, 1000));
 }
 
+function isTracerEnabled() {
+  try {
+    const config = tracer.getConfig();
+    return config.enabled;
+  } catch (e) {
+    return false;
+  }
+}
+
 let tracer;
 app.get('/', async (req, res) => {
   console.count('Test cloud trace initialize within a function');
   tracer = require('@google-cloud/trace-agent').get();
-  if (!tracer) {
+  // https://github.com/googleapis/cloud-trace-nodejs/issues/1098#issuecomment-521084534
+  if (!isTracerEnabled()) {
     const envVars = await getEnvVars();
     tracer = require('@google-cloud/trace-agent').start({
       samplingRate: 0,
@@ -24,14 +34,15 @@ app.get('/', async (req, res) => {
       keyFilename: envVars.keyFilename
     });
   }
-  await fetch('https://api.itbook.store/1.0/search/mongodb').then((res) => res.json());
-  await asyncOperation();
 
   tracer.runInRootSpan(
     {
       name: 'require-in-function'
     },
-    (rootSpan) => {
+    async (rootSpan) => {
+      await fetch('https://api.itbook.store/1.0/search/mongodb').then((res) => res.json());
+      await asyncOperation();
+
       res.sendStatus(200);
       rootSpan.endSpan();
     }
