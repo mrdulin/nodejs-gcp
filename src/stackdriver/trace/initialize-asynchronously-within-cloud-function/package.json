@@ -1,0 +1,19 @@
+{
+  "name": "initialize-asynchronously-within-cloud-function",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "gcloud functions deploy TestCloudTraceInitializeWithinCloudFunction --runtime nodejs8 --trigger-topic TestCloudTraceInitializeWithinCloudFunction",
+    "start": "node ./web-server/server.js"
+  },
+  "keywords": [],
+  "author": "mrdulin <novaline.dulin@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@google-cloud/pubsub": "^0.31.0",
+    "@google-cloud/trace-agent": "^4.1.1",
+    "express": "^4.17.1",
+    "node-fetch": "^2.6.0"
+  }
+}

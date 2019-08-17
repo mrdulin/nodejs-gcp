@@ -2,6 +2,8 @@ const express = require('express');
 const fetch = require('node-fetch');
 const app = express();
 
+let tracer;
+
 async function getEnvVars() {
   return {
     keyFilename: '/Users/ldu020/workspace/github.com/mrdulin/nodejs-gcp/.gcp/stackdriver-trace-admin.json'
@@ -21,7 +23,6 @@ function isTracerEnabled() {
   }
 }
 
-let tracer;
 app.get('/', async (req, res) => {
   console.count('Test cloud trace initialize within a function');
   tracer = require('@google-cloud/trace-agent').get();
