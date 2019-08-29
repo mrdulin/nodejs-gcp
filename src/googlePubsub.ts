@@ -1,6 +1,7 @@
-import Pubsub, { Publisher, GCloudConfiguration } from '@google-cloud/pubsub';
+import * as pubsub from '@google-cloud/pubsub';
 import { logger, genBufferMessage } from './utils';
 import './envVars';
+import { ClientConfig } from '@google-cloud/pubsub/build/src/pubsub';
 
 interface IMessage<Attributes extends object = {}> {
   connectionId: string;
@@ -15,12 +16,12 @@ interface IMessage<Attributes extends object = {}> {
   nack(): void;
 }
 
-const options: GCloudConfiguration = {} || {
+const options: ClientConfig = {
   projectId: process.env.PROJECT_ID,
   keyFilename: process.env.PUBSUB_ADMIN_CREDENTIAL
 };
-const pubsubClient: Pubsub.PubSub = Pubsub(options);
-const subscriberClient = new (Pubsub.v1 as any).SubscriberClient(options);
+const pubsubClient: pubsub.PubSub = new pubsub.PubSub(options);
+const subscriberClient = new (pubsub.v1 as any).SubscriberClient(options);
 
 async function createTopic(topicName: string): Promise<any> {
   const topicInstance = pubsubClient.topic(topicName);
@@ -75,11 +76,10 @@ async function clearAllMessages(topicName: string, subName: string) {
   logger.info(`Clear all messages of topic:${topicName} successfully`);
 }
 
-async function pub(topicName: string, message: any, attributes?: Publisher.Attributes) {
+async function pub(topicName: string, message: any, attributes?: pubsub.Attributes) {
   const buf: Buffer = genBufferMessage(message);
   return pubsubClient
     .topic(topicName)
-    .publisher()
     .publish(buf, attributes)
     .then((messageId) => {
       logger.info(`Message was published with ID: ${messageId}`);
