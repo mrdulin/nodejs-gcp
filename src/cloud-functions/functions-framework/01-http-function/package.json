@@ -1,0 +1,15 @@
+{
+  "name": "01-http-function",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "functions-framework --target=helloWorld"
+  },
+  "keywords": [],
+  "author": "mrdulin <novaline.dulin@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@google-cloud/functions-framework": "^1.5.0"
+  }
+}
