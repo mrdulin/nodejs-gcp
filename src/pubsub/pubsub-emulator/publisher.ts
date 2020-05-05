@@ -71,5 +71,3 @@ switch (command) {
     publishMessage(topicName);
     break;
 }
-
-setImmediate;
