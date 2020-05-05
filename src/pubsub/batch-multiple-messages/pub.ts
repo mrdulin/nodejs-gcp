@@ -1,4 +1,3 @@
-import { Publisher } from '@google-cloud/pubsub';
 import faker from 'faker';
 
 import { logger, sleep, coin } from '../../utils';
@@ -24,11 +23,11 @@ function genRandomDataBuffer() {
 async function main(options: any) {
   await createTopic(options.topic);
 
-  const publisher: Publisher = pubsubClient.topic(options.topic).publisher({
+  const publisher = pubsubClient.topic(options.topic, {
     batching: {
       maxMessages: options.maxMessages,
-      maxMilliseconds: options.maxWaitTime
-    }
+      maxMilliseconds: options.maxWaitTime,
+    },
   });
 
   const tasks: any[] = [];
