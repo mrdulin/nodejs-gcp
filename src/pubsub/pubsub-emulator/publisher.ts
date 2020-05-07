@@ -18,9 +18,18 @@ async function publishMessage(topicName) {
   const pubsub = new PubSub({ projectId: PUBSUB_PROJECT_ID });
   const topic = pubsub.topic(topicName, {
     batching: {
-      maxMessages: 10,
+      maxMessages: 2000,
+      maxMilliseconds: 1000,
     },
   });
+
+  // let idx = 0;
+  // setInterval(() => {
+  //   const data = `message payload ${idx}`;
+  //   const dataBuffer = Buffer.from(data);
+  //   topic.publish(dataBuffer);
+  //   idx++;
+  // }, 1000);
 
   const n = 50 * 1000;
   const dataBufs: Buffer[] = [];
@@ -30,10 +39,10 @@ async function publishMessage(topicName) {
     dataBufs.push(dataBuffer);
   }
 
-  const tasks = dataBufs.map(async (message) => {
+  const tasks = dataBufs.map(async (message, idx) => {
     try {
       const messageId = await topic.publish(message);
-      console.log(`[${new Date().toISOString()}] Message ${messageId} published.`);
+      console.log(`[${new Date().toISOString()}] Message ${messageId} published. index: ${idx}`);
       return messageId;
     } catch (error) {
       console.error(error);

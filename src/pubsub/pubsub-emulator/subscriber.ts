@@ -48,7 +48,7 @@ async function listenForMessages(subscriptionName, timeout = 60) {
 
 const argv = process.argv.slice(2);
 const command = argv[0];
-let subscriptionName;
+let subscriptionName = argv[1];
 switch (command) {
   case 'create':
     const topicName = argv[1];
@@ -56,12 +56,10 @@ switch (command) {
     createSubscription(topicName, subscriptionName);
     break;
   case 'delete':
-    subscriptionName = argv[1];
     deleteSubscription(subscriptionName);
     break;
   case 'receive':
     // npx ts-node ./subscriber.ts receive pubsub-emulator-t1-sub
-    subscriptionName = argv[1];
     listenForMessages(subscriptionName);
     break;
 }
