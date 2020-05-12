@@ -29,6 +29,7 @@
     "@google-cloud/redis": "^1.6.0",
     "@google-cloud/storage": "^3.0.2",
     "async": "^2.6.2",
+    "bluebird": "^3.7.2",
     "cors": "^2.8.5",
     "dl-toolkits": "^1.0.11",
     "express": "^4.17.1",
