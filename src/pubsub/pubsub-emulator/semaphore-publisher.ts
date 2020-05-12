@@ -1,6 +1,7 @@
 import { PubSub } from '@google-cloud/pubsub';
 import dotenv from 'dotenv';
 import path from 'path';
+const sem = require('semaphore')(1000);
 
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
@@ -23,44 +24,27 @@ async function publishMessage(topicName) {
     },
   });
 
-  // let idx = 0;
-  // setInterval(() => {
-  //   const data = `message payload ${idx}`;
-  //   const dataBuffer = Buffer.from(data);
-  //   topic.publish(dataBuffer);
-  //   idx++;
-  // }, 1000);
-
-  // will not hit the issue
-  const n = 50 * 1000;
+  const n = 100 * 1000;
   const dataBufs: Buffer[] = [];
   for (let i = 0; i < n; i++) {
     const data = `message payload ${i}`;
     const dataBuffer = Buffer.from(data);
     dataBufs.push(dataBuffer);
-    const messageId = await topic.publish(dataBuffer);
-    console.log(`[${new Date().toISOString()}] Message ${messageId} published. index: ${i}`);
   }
 
-  // hit the issue
-  // const tasks = dataBufs.map(async (message, idx) => {
-  //   try {
-  //     const messageId = await topic.publish(message);
-  //     console.log(`[${new Date().toISOString()}] Message ${messageId} published. index: ${idx}`);
-  //     return messageId;
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // });
-
-  // hit the same issue
+  const publishes: Array<Promise<void>> = [];
   const tasks = dataBufs.map((d, idx) =>
-    topic.publish(d).then((messageId) => {
-      console.log(`[${new Date().toISOString()}] Message ${messageId} published. index: ${idx}`);
+    sem.take(() => {
+      publishes.push(
+        topic.publish(d).then((messageId) => {
+          console.log(`[${new Date().toISOString()}] Message ${messageId} published. index: ${idx}`);
+          sem.leave();
+        })
+      );
     })
   );
 
-  await Promise.all(tasks);
+  await Promise.all(publishes);
 }
 
 const argv = process.argv.slice(2);

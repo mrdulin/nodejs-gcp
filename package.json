@@ -41,7 +41,8 @@
     "node-fetch": "^2.6.0",
     "pg": "^7.8.0",
     "request": "^2.88.2",
-    "request-promise": "^4.2.5"
+    "request-promise": "^4.2.5",
+    "semaphore": "^1.1.0"
   },
   "devDependencies": {
     "@types/dotenv": "^6.1.0",
