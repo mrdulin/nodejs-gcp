@@ -37,7 +37,7 @@
     "google-auth-library": "^4.0.0",
     "googleapis": "^42.0.0",
     "knex": "^0.21.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "lowdb": "^1.0.0",
     "node-fetch": "^2.6.0",
     "pg": "^7.8.0",
