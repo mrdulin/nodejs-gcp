@@ -33,7 +33,7 @@
     "@google-cloud/datastore": "2.0.0",
     "body-parser": "1.18.3",
     "express": "4.16.4",
-    "lodash": "4.17.11",
+    "lodash": "4.17.19",
     "mysql": "2.16.0",
     "nconf": "0.10.0",
     "prompt": "1.0.0",
