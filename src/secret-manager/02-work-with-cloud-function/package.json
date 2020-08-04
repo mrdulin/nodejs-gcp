@@ -1,0 +1,18 @@
+{
+  "name": "02-work-with-cloud-function",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "gcloud functions deploy testSecretManager --runtime nodejs10 --trigger-http --allow-unauthenticated",
+    "test": "gcloud functions call testSecretManager --data '{}'",
+    "logs:read": "gcloud functions logs read testSecretManager"
+  },
+  "keywords": [],
+  "author": "mrdulin <novaline.dulin@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@google-cloud/secret-manager": "^3.1.0",
+    "dotenv": "^8.2.0"
+  }
+}
