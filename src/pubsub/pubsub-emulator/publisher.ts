@@ -32,14 +32,14 @@ async function publishMessage(topicName) {
   // }, 1000);
 
   // will not hit the issue
-  const n = 50 * 1000;
+  const n = 100 * 1000;
   const dataBufs: Buffer[] = [];
   for (let i = 0; i < n; i++) {
     const data = `message payload ${i}`;
     const dataBuffer = Buffer.from(data);
     dataBufs.push(dataBuffer);
-    const messageId = await topic.publish(dataBuffer);
-    console.log(`[${new Date().toISOString()}] Message ${messageId} published. index: ${i}`);
+    // const messageId = await topic.publish(dataBuffer);
+    // console.log(`[${new Date().toISOString()}] Message ${messageId} published. index: ${i}`);
   }
 
   // hit the issue
